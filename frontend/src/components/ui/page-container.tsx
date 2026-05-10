@@ -1,5 +1,5 @@
 export const PageContainer = ({ children }: { children: React.ReactNode }) => {
-  return <div className="space-y-6 p-6">{children}</div>;
+  return <div className="space-y-8 p-8">{children}</div>;
 };
 
 export const PageHeader = ({ children }: { children: React.ReactNode }) => {
@@ -29,5 +29,5 @@ export const PageActions = ({ children }: { children: React.ReactNode }) => (
 );
 
 export const PageContent = ({ children }: { children: React.ReactNode }) => (
-  <div className="space-y-6">{children}</div>
+  <div className="space-y-8">{children}</div>
 );
