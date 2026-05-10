@@ -2,17 +2,10 @@
 
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import {
-  CalendarDays,
-  Gem,
-  LayoutDashboard,
   LogOut,
-  Stethoscope,
-  UsersRound,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -32,47 +25,20 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-// TODO: Implementar sessão/contexto seguro via backend/API
+import { useAppSidebarViewModel } from "@/features/navigation/hooks";
 
-// Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    title: "Agendamentos",
-    url: "/appointments",
-    icon: CalendarDays,
-  },
-  {
-    title: "Médicos",
-    url: "/doctors",
-    icon: Stethoscope,
-  },
-  {
-    title: "Pacientes",
-    url: "/patients",
-    icon: UsersRound,
-  },
-];
+interface AppSidebarProps {
+  userName?: string | null;
+  userEmail?: string | null;
+  hasClinic?: boolean;
+}
 
-export const AppSidebar = () => {
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const handleSignOut = async () => {
-    try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-      });
-      router.refresh();
-      router.replace("/authentication");
-    } catch {
-      toast.error("Erro ao encerrar sessão");
-    }
-  };
+export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) => {
+  const appSidebarViewModel = useAppSidebarViewModel({
+    userName,
+    userEmail,
+    hasClinic,
+  });
 
   return (
     <Sidebar>
@@ -89,9 +55,12 @@ export const AppSidebar = () => {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {appSidebarViewModel.primaryItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={appSidebarViewModel.isActive(item.url)}
+                  >
                     <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -104,20 +73,22 @@ export const AppSidebar = () => {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Outros</SidebarGroupLabel>
+          <SidebarGroupLabel>Other</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  isActive={pathname === "/subscription"}
-                  asChild
-                >
-                  <Link href="/subscription">
-                    <Gem />
-                    <span>Assinatura</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {appSidebarViewModel.secondaryItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    isActive={appSidebarViewModel.isActive(item.url)}
+                    asChild
+                  >
+                    <Link href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -130,19 +101,20 @@ export const AppSidebar = () => {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton size="lg">
                   <Avatar>
-                    <AvatarFallback>V</AvatarFallback>
+                    <AvatarFallback>{appSidebarViewModel.initials}</AvatarFallback>
                   </Avatar>
                   <div>
-                    {/* TODO: Exibir dados do usuário/clinica via backend/API */}
-                    <p className="text-sm">Não possui clínica</p>
-                    <p className="text-muted-foreground text-sm">email@exemplo.com</p>
+                    <p className="text-sm">{appSidebarViewModel.clinicStatusLabel}</p>
+                    <p className="text-muted-foreground text-sm">
+                      {appSidebarViewModel.userEmail}
+                    </p>
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={handleSignOut}>
+                <DropdownMenuItem onClick={appSidebarViewModel.handleSignOut}>
                   <LogOut />
-                  Sair
+                  Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

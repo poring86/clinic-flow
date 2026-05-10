@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { NavigationShell } from "@/features/navigation";
 import { getServerSession } from "@/lib/auth/server-session";
 
-import { AppSidebar } from "./_components/app-sidebar";
+export const dynamic = "force-dynamic";
 
 const ProtectedLayout = async ({
   children,
@@ -16,17 +16,7 @@ const ProtectedLayout = async ({
     redirect("/authentication");
   }
 
-  return (
-    <SidebarProvider>
-      <AppSidebar />
-
-      <main className="w-full">
-        <SidebarTrigger />
-
-        {children}
-      </main>
-    </SidebarProvider>
-  );
+  return <NavigationShell session={session}>{children}</NavigationShell>;
 };
 
 export default ProtectedLayout;

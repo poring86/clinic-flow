@@ -7,6 +7,8 @@ import { getServerSession } from "@/lib/auth/server-session";
 import SignInForm from "./_components/sign-in-form";
 import SignUpForm from "./_components/sign-up-form";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Autenticação | Clic Flow",
 };
