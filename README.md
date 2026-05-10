@@ -120,6 +120,32 @@ This keeps routing concerns isolated from business/presentation layers and enfor
 
 For the complete convention and examples, see `frontend/ARCHITECTURE.md`.
 
+### Rendering Strategy (SSR + SSG/ISR)
+
+The frontend uses a **hybrid rendering model**.
+
+- **Protected routes** under `src/app/(protected)` are **SSR dynamic**.
+        - These routes are session-dependent and tenant-dependent.
+        - They must not be statically generated or shared across users.
+- **Session redirect routes** (`/` and `/authentication`) are **SSR dynamic**.
+        - Redirect behavior depends on the current authenticated user.
+- **Public marketing/content routes** (when added) should use **SSG or ISR**.
+        - Use SSG for immutable content.
+        - Use ISR for content that changes occasionally.
+
+#### Current implementation status
+
+- `frontend/src/app/(protected)/layout.tsx`: `dynamic = "force-dynamic"`
+- `frontend/src/app/page.tsx`: `dynamic = "force-dynamic"`
+- `frontend/src/app/authentication/page.tsx`: `dynamic = "force-dynamic"`
+- `frontend/src/lib/auth/server-session.ts`: server session fetch uses `cache: "no-store"`
+
+#### Cache policy rules
+
+- Never cache user-specific session responses in shared caches.
+- Keep mutation invalidation explicit (React Query on client; server revalidation for future ISR pages).
+- When adding public pages, define `revalidate` per route and document the chosen interval.
+
 ### Request flow for a protected page
 
 ```

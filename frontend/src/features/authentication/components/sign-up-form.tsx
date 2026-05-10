@@ -32,7 +32,7 @@ const registerSchema = z.object({
   password: z.string().trim().min(8, "Senha deve ter pelo menos 8 caracteres"),
 });
 
-const SignUpForm = () => {
+export const SignUpForm = () => {
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -49,7 +49,11 @@ const SignUpForm = () => {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: data.name, email: data.email, password: data.password }),
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        }),
       });
       if (!res.ok) {
         const error = await res.json().catch(() => ({}));
@@ -131,5 +135,3 @@ const SignUpForm = () => {
     </Card>
   );
 };
-
-export default SignUpForm;

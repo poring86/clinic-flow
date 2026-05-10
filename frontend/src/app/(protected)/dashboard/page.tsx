@@ -1,4 +1,3 @@
-import { Calendar } from "lucide-react";
 import { Metadata } from "next";
 
 import {
@@ -10,14 +9,15 @@ import {
   PageHeaderContent,
   PageTitle,
 } from "@/components/ui/page-container";
+import {
+  AppointmentsChartCard,
+  DatePicker,
+  SummaryCard,
+  TodayAppointmentsCard,
+  TopDoctorsCard,
+  TopSpecialtiesCard,
+} from "@/features/dashboard";
 import { getServerSession } from "@/lib/auth/server-session";
-
-import { DatePicker } from "./_components/date-picker";
-import { SummaryContainer } from "./_components/summary-container";
-import { AppointmentsChartContainer } from "./_components/appointments-chart-container";
-import { TopDoctorsContainer } from "./_components/top-doctors-container";
-import { TopSpecialtiesContainer } from "./_components/top-specialties-container";
-import { TodayAppointmentsContainer } from "./_components/today-appointments-container";
 
 export const metadata: Metadata = {
   title: "Dashboard | Clic Flow",
@@ -62,16 +62,16 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
         </PageActions>
       </PageHeader>
       <PageContent>
-        <SummaryContainer clinicId={clinicId} from={from} to={to} />
+        <SummaryCard clinicId={clinicId} from={from} to={to} />
 
         <div className="grid grid-cols-[2.24fr_1fr] gap-4">
-          <AppointmentsChartContainer clinicId={clinicId} from={from} to={to} />
-          <TopDoctorsContainer clinicId={clinicId} from={from} to={to} />
+          <AppointmentsChartCard clinicId={clinicId} from={from} to={to} />
+          <TopDoctorsCard clinicId={clinicId} from={from} to={to} />
         </div>
 
         <div className="grid grid-cols-[2.24fr_1fr] gap-4">
-          <TodayAppointmentsContainer clinicId={clinicId} from={from} to={to} />
-          <TopSpecialtiesContainer clinicId={clinicId} from={from} to={to} />
+          <TodayAppointmentsCard clinicId={clinicId} from={from} to={to} />
+          <TopSpecialtiesCard clinicId={clinicId} from={from} to={to} />
         </div>
       </PageContent>
     </PageContainer>

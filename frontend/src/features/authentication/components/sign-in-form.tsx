@@ -30,7 +30,7 @@ const signInSchema = z.object({
   password: z.string().trim().min(8, "Senha deve ter pelo menos 8 caracteres"),
 });
 
-const SignInForm = () => {
+export const SignInForm = () => {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -141,5 +141,3 @@ const SignInForm = () => {
     </Card>
   );
 };
-
-export default SignInForm;

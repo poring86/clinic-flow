@@ -131,6 +131,41 @@ const AppointmentsPageRoute = async () => {
 export default AppointmentsPageRoute;
 ```
 
+## Rendering Strategy Policy (SSR/SSG/ISR)
+
+This project uses a hybrid rendering policy aligned with security and scalability goals.
+
+### Route classes
+
+- **Protected application routes** (`src/app/(protected)/**`):
+  - Must be **dynamic SSR**.
+  - Depend on authenticated session and clinic context.
+  - Must not be statically generated.
+
+- **Session-based redirect routes** (`src/app/page.tsx`, `src/app/authentication/page.tsx`):
+  - Must be **dynamic SSR**.
+  - Redirect outcome depends on authenticated state.
+
+- **Public content routes** (future marketing/docs pages):
+  - Prefer **SSG** for immutable content.
+  - Prefer **ISR** when content changes occasionally.
+  - Each ISR route must declare a clear `revalidate` interval.
+
+### Current baseline
+
+- Dynamic SSR explicitly enabled in:
+  - `src/app/(protected)/layout.tsx`
+  - `src/app/page.tsx`
+  - `src/app/authentication/page.tsx`
+- Server session lookup uses `cache: "no-store"` in:
+  - `src/lib/auth/server-session.ts`
+
+### Practical rules
+
+- Do not share cached responses for user-specific/session-specific data.
+- Keep route entrypoints thin and delegate business/UI behavior to feature slices.
+- For future ISR pages, define invalidation ownership (event-triggered revalidate path/tag).
+
 ### Route-Specific Components (`_components/`)
 
 The `_components/` folder inside app routes contains **route-scoped components only**:
@@ -272,9 +307,7 @@ User submits appointment form:
 
 ## Next Steps
 
-Apply this pattern to:
-- [ ] Doctors feature
-- [ ] Patients feature
-- [ ] Clinic feature
-
-Use `src/features/appointments/` as a template.
+Recommended roadmap:
+- [ ] Migrate `src/app/authentication/_components` into a dedicated feature slice.
+- [ ] Move dashboard route-scoped wrappers from `src/app/(protected)/dashboard/_components` into `src/features/dashboard` where appropriate.
+- [ ] Add public content routes (landing/pricing/docs) and apply SSG/ISR with explicit `revalidate` values.
