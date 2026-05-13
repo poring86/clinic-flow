@@ -1,8 +1,8 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
-import * as bcrypt from "bcryptjs";
-import { v4 as uuidv4 } from "uuid";
-import * as schema from "./schema";
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
+import * as bcrypt from 'bcryptjs';
+import { v4 as uuidv4 } from 'uuid';
+import * as schema from './schema';
 import {
   usersTable,
   accountsTable,
@@ -11,13 +11,13 @@ import {
   doctorsTable,
   patientsTable,
   appointmentsTable,
-} from "./schema";
+} from './schema';
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const db = drizzle(pool, { schema });
 
 async function main() {
-  console.log("Seeding database…");
+  console.log('Seeding database…');
 
   // ------------------------------------------------------------------
   // Wipe existing seed data (order respects FK constraints)
@@ -34,12 +34,12 @@ async function main() {
   // User
   // ------------------------------------------------------------------
   const userId = uuidv4();
-  const passwordHash = await bcrypt.hash("admin123", 10);
+  const passwordHash = await bcrypt.hash('admin123', 10);
 
   await db.insert(usersTable).values({
     id: userId,
-    name: "Admin Demo",
-    email: "admin@clinic-flow.com",
+    name: 'Admin Demo',
+    email: 'admin@clinic-flow.com',
     emailVerified: false,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -48,21 +48,21 @@ async function main() {
   await db.insert(accountsTable).values({
     id: uuidv4(),
     accountId: userId,
-    providerId: "credentials",
+    providerId: 'credentials',
     userId,
     password: passwordHash,
     createdAt: new Date(),
     updatedAt: new Date(),
   });
 
-  console.log("  ✓ User created  →  admin@clinic-flow.com / admin123");
+  console.log('  ✓ User created  →  admin@clinic-flow.com / admin123');
 
   // ------------------------------------------------------------------
   // Clinic
   // ------------------------------------------------------------------
   const [clinic] = await db
     .insert(clinicsTable)
-    .values({ name: "Clínica Demo" })
+    .values({ name: 'Demo Clinic' })
     .returning();
 
   await db.insert(usersToClinicsTable).values({
@@ -77,48 +77,48 @@ async function main() {
   // ------------------------------------------------------------------
   const doctorData = [
     {
-      name: "Dr. Carlos Mendes",
-      specialty: "Cardiologia",
+      name: 'Dr. Carlos Mendes',
+      specialty: 'Cardiologia',
       availableFromWeekDay: 1, // Monday
       availableToWeekDay: 5, // Friday
-      availableFromTime: "08:00:00",
-      availableToTime: "18:00:00",
+      availableFromTime: '08:00:00',
+      availableToTime: '18:00:00',
       appointmentPriceInCents: 25000, // R$ 250,00
     },
     {
-      name: "Dra. Fernanda Lima",
-      specialty: "Dermatologia",
+      name: 'Dra. Fernanda Lima',
+      specialty: 'Dermatologia',
       availableFromWeekDay: 1,
       availableToWeekDay: 4, // Thursday
-      availableFromTime: "09:00:00",
-      availableToTime: "17:00:00",
+      availableFromTime: '09:00:00',
+      availableToTime: '17:00:00',
       appointmentPriceInCents: 20000, // R$ 200,00
     },
     {
-      name: "Dr. Rafael Torres",
-      specialty: "Ortopedia",
+      name: 'Dr. Rafael Torres',
+      specialty: 'Ortopedia',
       availableFromWeekDay: 2, // Tuesday
       availableToWeekDay: 6, // Saturday
-      availableFromTime: "07:00:00",
-      availableToTime: "15:00:00",
+      availableFromTime: '07:00:00',
+      availableToTime: '15:00:00',
       appointmentPriceInCents: 30000, // R$ 300,00
     },
     {
-      name: "Dra. Juliana Costa",
-      specialty: "Pediatria",
+      name: 'Dra. Juliana Costa',
+      specialty: 'Pediatria',
       availableFromWeekDay: 1,
       availableToWeekDay: 5,
-      availableFromTime: "08:00:00",
-      availableToTime: "16:00:00",
+      availableFromTime: '08:00:00',
+      availableToTime: '16:00:00',
       appointmentPriceInCents: 18000, // R$ 180,00
     },
     {
-      name: "Dr. André Batista",
-      specialty: "Neurologia",
+      name: 'Dr. André Batista',
+      specialty: 'Neurologia',
       availableFromWeekDay: 1,
       availableToWeekDay: 5,
-      availableFromTime: "10:00:00",
-      availableToTime: "19:00:00",
+      availableFromTime: '10:00:00',
+      availableToTime: '19:00:00',
       appointmentPriceInCents: 35000, // R$ 350,00
     },
   ];
@@ -133,56 +133,60 @@ async function main() {
   // ------------------------------------------------------------------
   // Patients
   // ------------------------------------------------------------------
-  const patientData = [
-    {
-      name: "Ana Paula Rodrigues",
-      email: "ana.rodrigues@email.com",
-      phoneNumber: "11987654321",
-      sex: "female" as const,
-    },
-    {
-      name: "Bruno Souza",
-      email: "bruno.souza@email.com",
-      phoneNumber: "11976543210",
-      sex: "male" as const,
-    },
-    {
-      name: "Carla Ferreira",
-      email: "carla.ferreira@email.com",
-      phoneNumber: "11965432109",
-      sex: "female" as const,
-    },
-    {
-      name: "Diego Alves",
-      email: "diego.alves@email.com",
-      phoneNumber: "11954321098",
-      sex: "male" as const,
-    },
-    {
-      name: "Eduarda Martins",
-      email: "eduarda.martins@email.com",
-      phoneNumber: "11943210987",
-      sex: "female" as const,
-    },
-    {
-      name: "Felipe Nascimento",
-      email: "felipe.nascimento@email.com",
-      phoneNumber: "11932109876",
-      sex: "male" as const,
-    },
-    {
-      name: "Gabriela Oliveira",
-      email: "gabriela.oliveira@email.com",
-      phoneNumber: "11921098765",
-      sex: "female" as const,
-    },
-    {
-      name: "Henrique Castro",
-      email: "henrique.castro@email.com",
-      phoneNumber: "11910987654",
-      sex: "male" as const,
-    },
+  const firstNames = [
+    'Alex',
+    'Taylor',
+    'Jordan',
+    'Morgan',
+    'Casey',
+    'Avery',
+    'Parker',
+    'Riley',
+    'Cameron',
+    'Quinn',
+    'Logan',
+    'Hayden',
+    'Skyler',
+    'Rowan',
+    'Charlie',
+    'Jamie',
+    'Reese',
+    'Dakota',
+    'Sam',
+    'Emerson',
   ];
+
+  const lastNames = [
+    'Silva',
+    'Santos',
+    'Costa',
+    'Oliveira',
+    'Almeida',
+    'Pereira',
+    'Ribeiro',
+    'Carvalho',
+    'Mendes',
+    'Araujo',
+    'Fernandes',
+    'Barbosa',
+    'Gomes',
+    'Martins',
+    'Rocha',
+  ];
+
+  const patientData = Array.from({ length: 180 }).map((_, index) => {
+    const firstName = firstNames[index % firstNames.length];
+    const lastName =
+      lastNames[Math.floor(index / firstNames.length) % lastNames.length];
+    const serial = String(index + 1).padStart(3, '0');
+
+    return {
+      name: `${firstName} ${lastName} ${serial}`,
+      email: `patient.${serial}@demo.clinic`,
+      phoneNumber: `1199${String(100000 + index).slice(-6)}`,
+      sex: index % 2 === 0 ? ('female' as const) : ('male' as const),
+    };
+  });
 
   const patients = await db
     .insert(patientsTable)
@@ -192,53 +196,60 @@ async function main() {
   console.log(`  ✓ ${patients.length} patients created`);
 
   // ------------------------------------------------------------------
-  // Appointments — spread across the last 30 days and next 30 days
+  // Appointments — high-volume distribution over past and upcoming months
   // ------------------------------------------------------------------
   const now = new Date();
+  const appointmentValues: {
+    clinicId: string;
+    doctorId: string;
+    patientId: string;
+    date: Date;
+    appointmentPriceInCents: number;
+  }[] = [];
 
-  const appointmentSlots: {
-    doctorIndex: number;
-    patientIndex: number;
-    daysOffset: number; // negative = past
-    hour: number;
-  }[] = [
-    { doctorIndex: 0, patientIndex: 0, daysOffset: -25, hour: 9 },
-    { doctorIndex: 0, patientIndex: 1, daysOffset: -20, hour: 10 },
-    { doctorIndex: 1, patientIndex: 2, daysOffset: -18, hour: 9 },
-    { doctorIndex: 1, patientIndex: 3, daysOffset: -15, hour: 14 },
-    { doctorIndex: 2, patientIndex: 4, daysOffset: -12, hour: 8 },
-    { doctorIndex: 2, patientIndex: 5, daysOffset: -10, hour: 11 },
-    { doctorIndex: 3, patientIndex: 6, daysOffset: -7, hour: 9 },
-    { doctorIndex: 3, patientIndex: 7, daysOffset: -5, hour: 15 },
-    { doctorIndex: 4, patientIndex: 0, daysOffset: -3, hour: 10 },
-    { doctorIndex: 0, patientIndex: 2, daysOffset: -1, hour: 8 },
-    // future appointments
-    { doctorIndex: 1, patientIndex: 4, daysOffset: 2, hour: 9 },
-    { doctorIndex: 2, patientIndex: 6, daysOffset: 5, hour: 8 },
-    { doctorIndex: 3, patientIndex: 1, daysOffset: 7, hour: 14 },
-    { doctorIndex: 4, patientIndex: 3, daysOffset: 10, hour: 10 },
-    { doctorIndex: 0, patientIndex: 5, daysOffset: 14, hour: 11 },
-    { doctorIndex: 1, patientIndex: 7, daysOffset: 18, hour: 9 },
-    { doctorIndex: 2, patientIndex: 0, daysOffset: 21, hour: 8 },
-    { doctorIndex: 3, patientIndex: 2, daysOffset: 25, hour: 15 },
-  ];
+  for (let daysOffset = -150; daysOffset <= 60; daysOffset++) {
+    const date = new Date(now);
+    date.setDate(date.getDate() + daysOffset);
+    const weekDay = date.getDay();
 
-  const appointmentValues = appointmentSlots.map(
-    ({ doctorIndex, patientIndex, daysOffset, hour }) => {
-      const date = new Date(now);
-      date.setDate(date.getDate() + daysOffset);
-      date.setHours(hour, 0, 0, 0);
+    doctors.forEach((doctor, doctorIndex) => {
+      if (
+        weekDay < doctor.availableFromWeekDay ||
+        weekDay > doctor.availableToWeekDay
+      ) {
+        return;
+      }
 
-      const doctor = doctors[doctorIndex];
-      return {
-        clinicId: clinic.id,
-        doctorId: doctor.id,
-        patientId: patients[patientIndex].id,
-        date,
-        appointmentPriceInCents: doctor.appointmentPriceInCents,
-      };
-    },
-  );
+      const baseVolume = daysOffset <= 0 ? 4 : 3;
+      const dayVariance = (Math.abs(daysOffset) + doctorIndex) % 3;
+      const appointmentsPerDoctor = baseVolume + dayVariance;
+
+      const startHour = Number(doctor.availableFromTime.split(':')[0]);
+      const endHour = Number(doctor.availableToTime.split(':')[0]);
+      const hourSpan = Math.max(1, endHour - startHour);
+
+      for (let slotIndex = 0; slotIndex < appointmentsPerDoctor; slotIndex++) {
+        const appointmentDate = new Date(date);
+        const slotHour =
+          startHour +
+          ((slotIndex * 2 + Math.abs(daysOffset) + doctorIndex) % hourSpan);
+
+        appointmentDate.setHours(slotHour, 0, 0, 0);
+
+        const patientIndex =
+          (Math.abs(daysOffset) * 11 + doctorIndex * 17 + slotIndex * 7) %
+          patients.length;
+
+        appointmentValues.push({
+          clinicId: clinic.id,
+          doctorId: doctor.id,
+          patientId: patients[patientIndex].id,
+          date: appointmentDate,
+          appointmentPriceInCents: doctor.appointmentPriceInCents,
+        });
+      }
+    });
+  }
 
   const appointments = await db
     .insert(appointmentsTable)
@@ -247,17 +258,17 @@ async function main() {
 
   console.log(`  ✓ ${appointments.length} appointments created`);
 
-  console.log("\nSeed completed successfully.");
-  console.log("────────────────────────────────────────");
-  console.log("  Login:    admin@clinic-flow.com");
-  console.log("  Password: admin123");
-  console.log("────────────────────────────────────────");
+  console.log('\nSeed completed successfully.');
+  console.log('────────────────────────────────────────');
+  console.log('  Login:    admin@clinic-flow.com');
+  console.log('  Password: admin123');
+  console.log('────────────────────────────────────────');
 
   await pool.end();
 }
 
 main().catch((err) => {
-  console.error("Seed failed:", err);
-  pool.end();
+  console.error('Seed failed:', err);
+  void pool.end();
   process.exit(1);
 });

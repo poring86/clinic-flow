@@ -5,7 +5,6 @@
  * API documentation for Clic Flow
  * OpenAPI spec version: 1.0
  */
-import { useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -17,6 +16,7 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export type appControllerGetHelloResponse200 = {
   data: void;

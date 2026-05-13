@@ -5,7 +5,6 @@
  * API documentation for Clic Flow
  * OpenAPI spec version: 1.0
  */
-import { useQuery } from "@tanstack/react-query";
 import type {
   DataTag,
   DefinedInitialDataOptions,
@@ -17,6 +16,9 @@ import type {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+
+import { getApiBaseUrl } from "@/lib/api-base-url";
 
 import type {
   DashboardControllerGetDailyAppointmentsDataParams,
@@ -25,7 +27,6 @@ import type {
   DashboardControllerGetTopDoctorsParams,
   DashboardControllerGetTopSpecialtiesParams,
 } from "../../schemas";
-import { getApiBaseUrl } from "@/lib/api-base-url";
 
 export type dashboardControllerGetSummaryResponse200 = {
   data: void;

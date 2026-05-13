@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { type Dispatch, useCallback, useState } from "react";
+
 import { useDashboardControllerGetDailyAppointmentsData } from "@/api/generated/dashboard/dashboard";
 
 export interface DailyAppointmentData {
@@ -13,7 +14,7 @@ interface UseDashboardDailyAppointmentsViewModelProps {
   clinicId: string;
   from: string;
   to: string;
-  onError?: (error: Error) => void;
+  onError?: Dispatch<Error>;
 }
 
 export const useDashboardDailyAppointmentsViewModel = ({

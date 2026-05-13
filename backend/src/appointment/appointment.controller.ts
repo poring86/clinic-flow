@@ -1,4 +1,3 @@
-
 import {
   Body,
   Controller,
@@ -23,7 +22,9 @@ export class AppointmentController {
   @Get()
   @ApiOperation({ summary: 'List all appointments' })
   @ApiResponse({ status: 200, type: [AppointmentDto] })
-  async findAll(@Query('clinicId') clinicId?: string): Promise<AppointmentDto[]> {
+  async findAll(
+    @Query('clinicId') clinicId?: string,
+  ): Promise<AppointmentDto[]> {
     return this.appointmentService.findAll(clinicId);
   }
 

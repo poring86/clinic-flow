@@ -1,6 +1,7 @@
 "use client";
 
 import { useDashboardDailyAppointmentsViewModel } from "@/features/dashboard/hooks";
+
 import { AppointmentsChart } from ".";
 
 interface AppointmentsChartCardProps {

@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { type Dispatch, useCallback, useState } from "react";
+
 import { useDashboardControllerGetSummary } from "@/api/generated/dashboard/dashboard";
 
 export interface SummaryData {
@@ -21,7 +22,7 @@ interface UseDashboardSummaryViewModelProps {
   clinicId: string;
   from: string;
   to: string;
-  onError?: (error: Error) => void;
+  onError?: Dispatch<Error>;
 }
 
 export const useDashboardSummaryViewModel = ({

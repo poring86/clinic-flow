@@ -10,7 +10,15 @@ import { StripeModule } from './stripe/stripe.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [AppointmentModule, DashboardModule, DoctorModule, PatientModule, ClinicModule, StripeModule, AuthModule],
+  imports: [
+    AppointmentModule,
+    DashboardModule,
+    DoctorModule,
+    PatientModule,
+    ClinicModule,
+    StripeModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

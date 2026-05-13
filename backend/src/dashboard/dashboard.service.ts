@@ -32,25 +32,29 @@ export class DashboardService {
       lte(appointmentsTable.date, toDate),
     );
 
-    const [[revenueResult], [appointmentsResult], [patientsResult], [doctorsResult]] =
-      await Promise.all([
-        db
-          .select({ total: sum(appointmentsTable.appointmentPriceInCents) })
-          .from(appointmentsTable)
-          .where(appointmentRangeFilter),
-        db
-          .select({ total: count() })
-          .from(appointmentsTable)
-          .where(appointmentRangeFilter),
-        db
-          .select({ total: count() })
-          .from(patientsTable)
-          .where(eq(patientsTable.clinicId, clinicId)),
-        db
-          .select({ total: count() })
-          .from(doctorsTable)
-          .where(eq(doctorsTable.clinicId, clinicId)),
-      ]);
+    const [
+      [revenueResult],
+      [appointmentsResult],
+      [patientsResult],
+      [doctorsResult],
+    ] = await Promise.all([
+      db
+        .select({ total: sum(appointmentsTable.appointmentPriceInCents) })
+        .from(appointmentsTable)
+        .where(appointmentRangeFilter),
+      db
+        .select({ total: count() })
+        .from(appointmentsTable)
+        .where(appointmentRangeFilter),
+      db
+        .select({ total: count() })
+        .from(patientsTable)
+        .where(eq(patientsTable.clinicId, clinicId)),
+      db
+        .select({ total: count() })
+        .from(doctorsTable)
+        .where(eq(doctorsTable.clinicId, clinicId)),
+    ]);
 
     return {
       totalRevenue: { total: Number(revenueResult.total ?? 0) },
@@ -136,7 +140,10 @@ export class DashboardService {
         },
       })
       .from(appointmentsTable)
-      .innerJoin(patientsTable, eq(appointmentsTable.patientId, patientsTable.id))
+      .innerJoin(
+        patientsTable,
+        eq(appointmentsTable.patientId, patientsTable.id),
+      )
       .innerJoin(doctorsTable, eq(appointmentsTable.doctorId, doctorsTable.id))
       .where(
         and(
@@ -168,5 +175,4 @@ export class DashboardService {
       .groupBy(sql`DATE(${appointmentsTable.date})`)
       .orderBy(sql`DATE(${appointmentsTable.date})`);
   }
-
 }

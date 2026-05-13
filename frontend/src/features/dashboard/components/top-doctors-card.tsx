@@ -1,6 +1,7 @@
 "use client";
 
 import { useDashboardTopDoctorsViewModel } from "@/features/dashboard/hooks";
+
 import { TopDoctors } from ".";
 
 interface TopDoctorsCardProps {
@@ -20,6 +21,14 @@ export const TopDoctorsCard = ({
     to,
   });
 
+  const normalizedDoctors = doctors.map((doctor) => ({
+    id: doctor.doctorId,
+    name: doctor.name,
+    avatarImageUrl: null,
+    specialty: doctor.specialty,
+    appointments: doctor.appointmentCount,
+  }));
+
   if (isLoading) {
     return <div className="h-80 bg-muted animate-pulse rounded" />;
   }
@@ -32,5 +41,5 @@ export const TopDoctorsCard = ({
     );
   }
 
-  return <TopDoctors doctors={doctors} />;
+  return <TopDoctors doctors={normalizedDoctors} />;
 };

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
-import { AuthenticationPage } from "@/features/authentication";
+import { AuthenticationPage as AuthenticationScreen } from "@/features/authentication";
 import { getServerSession } from "@/lib/auth/server-session";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +17,7 @@ const AuthenticationPage = async () => {
     redirect("/dashboard");
   }
 
-  return <AuthenticationPage />;
+  return <AuthenticationScreen />;
 };
 
 export default AuthenticationPage;

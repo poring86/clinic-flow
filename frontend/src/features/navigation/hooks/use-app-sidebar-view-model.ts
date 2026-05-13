@@ -1,5 +1,6 @@
 "use client";
 
+import type { LucideIcon } from "lucide-react";
 import {
   CalendarDays,
   Gem,
@@ -7,7 +8,6 @@ import {
   Stethoscope,
   UsersRound,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 

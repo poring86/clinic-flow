@@ -21,8 +21,10 @@ export const TopDoctors = ({ doctors }: TopDoctorsProps) => {
       <CardContent>
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Stethoscope className="text-muted-foreground" />
-            <CardTitle className="text-base">Médicos</CardTitle>
+            <div className="bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full">
+              <Stethoscope className="text-primary h-4 w-4" />
+            </div>
+            <CardTitle className="text-base">Doctors</CardTitle>
           </div>
         </div>
 
@@ -51,7 +53,7 @@ export const TopDoctors = ({ doctors }: TopDoctorsProps) => {
               </div>
               <div className="text-right">
                 <span className="text-muted-foreground text-sm font-medium">
-                  {doctor.appointments} agend.
+                  {doctor.appointments} appointments
                 </span>
               </div>
             </div>

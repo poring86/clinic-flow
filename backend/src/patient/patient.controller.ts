@@ -1,4 +1,14 @@
-import { Controller, Post, Body, Put, Delete, Param, Get, Query, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Put,
+  Delete,
+  Param,
+  Get,
+  Query,
+  NotFoundException,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { PatientDto } from './dto/patient.dto';

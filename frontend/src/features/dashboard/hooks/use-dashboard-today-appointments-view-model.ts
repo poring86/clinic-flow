@@ -1,36 +1,41 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { type Dispatch, useCallback, useState } from "react";
+
 import { useDashboardControllerGetTodayAppointments } from "@/api/generated/dashboard/dashboard";
 
 export interface TodayAppointment {
   id: string;
-  patientName: string;
-  patientEmail: string;
-  doctorName: string;
-  specialty: string;
-  scheduledAt: string;
-  status: string;
+  date?: string;
+  scheduledAt?: string;
+  patientName?: string;
+  doctorName?: string;
+  specialty?: string;
+  patient?: {
+    name?: string;
+  };
+  doctor?: {
+    name?: string;
+    specialty?: string;
+  };
 }
 
 interface UseDashboardTodayAppointmentsViewModelProps {
   clinicId: string;
   from: string;
   to: string;
-  onError?: (error: Error) => void;
+  onError?: Dispatch<Error>;
 }
 
 export const useDashboardTodayAppointmentsViewModel = ({
   clinicId,
-  from,
-  to,
   onError,
 }: UseDashboardTodayAppointmentsViewModelProps) => {
   const [retryCount, setRetryCount] = useState(0);
 
   const { data, isLoading, error, refetch } =
     useDashboardControllerGetTodayAppointments(
-      { clinicId, from, to },
+      { clinicId },
       {
         query: {
           retry: 1,

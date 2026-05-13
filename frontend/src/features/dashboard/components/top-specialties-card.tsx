@@ -1,6 +1,7 @@
 "use client";
 
 import { useDashboardTopSpecialtiesViewModel } from "@/features/dashboard/hooks";
+
 import { TopSpecialties } from ".";
 
 interface TopSpecialtiesCardProps {
@@ -21,6 +22,11 @@ export const TopSpecialtiesCard = ({
       to,
     });
 
+  const normalizedSpecialties = specialties.map((specialty) => ({
+    specialty: specialty.specialty,
+    appointments: specialty.appointmentCount,
+  }));
+
   if (isLoading) {
     return <div className="h-80 bg-muted animate-pulse rounded" />;
   }
@@ -33,5 +39,5 @@ export const TopSpecialtiesCard = ({
     );
   }
 
-  return <TopSpecialties topSpecialties={specialties} />;
+  return <TopSpecialties topSpecialties={normalizedSpecialties} />;
 };

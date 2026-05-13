@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  Query,
+  NotFoundException,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { DoctorDto } from './dto/doctor.dto';
@@ -26,7 +36,10 @@ export class DoctorController {
   @Put(':id')
   @ApiOperation({ summary: 'Update a doctor' })
   @ApiResponse({ status: 200, type: DoctorDto })
-  async update(@Param('id') id: string, @Body() body: CreateDoctorDto): Promise<DoctorDto | null> {
+  async update(
+    @Param('id') id: string,
+    @Body() body: CreateDoctorDto,
+  ): Promise<DoctorDto | null> {
     return this.doctorService.update(id, body);
   }
 

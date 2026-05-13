@@ -10,13 +10,18 @@ import { UpdatePatientDto } from './dto/update-patient.dto';
 @Injectable()
 export class PatientService {
   async delete(id: string): Promise<boolean> {
-    const result = await db.delete(patientsTable).where(eq(patientsTable.id, id));
-    return result.rowCount > 0;
+    const result = await db
+      .delete(patientsTable)
+      .where(eq(patientsTable.id, id));
+    return (result.rowCount ?? 0) > 0;
   }
 
   async findAll(clinicId?: string): Promise<PatientDto[]> {
     const rows = clinicId
-      ? await db.select().from(patientsTable).where(eq(patientsTable.clinicId, clinicId))
+      ? await db
+          .select()
+          .from(patientsTable)
+          .where(eq(patientsTable.clinicId, clinicId))
       : await db.select().from(patientsTable);
 
     return rows.map((row) => ({

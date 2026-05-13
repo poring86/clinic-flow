@@ -10,7 +10,10 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 export class AppointmentService {
   async findAll(clinicId?: string): Promise<AppointmentDto[]> {
     const rows = clinicId
-      ? await db.select().from(appointmentsTable).where(eq(appointmentsTable.clinicId, clinicId))
+      ? await db
+          .select()
+          .from(appointmentsTable)
+          .where(eq(appointmentsTable.clinicId, clinicId))
       : await db.select().from(appointmentsTable);
 
     return rows.map((row) => ({
@@ -54,6 +57,6 @@ export class AppointmentService {
       .delete(appointmentsTable)
       .where(eq(appointmentsTable.id, id));
 
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 }

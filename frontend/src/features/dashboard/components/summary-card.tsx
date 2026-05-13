@@ -1,7 +1,7 @@
 "use client";
 
-import { useDashboardSummaryViewModel } from "@/features/dashboard/hooks";
 import { StatsCards } from "@/features/appointments/components";
+import { useDashboardSummaryViewModel } from "@/features/dashboard/hooks";
 
 interface SummaryCardProps {
   clinicId: string;

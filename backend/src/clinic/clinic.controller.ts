@@ -1,6 +1,10 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+interface CreateClinicBody {
+  name: string;
+}
+
 @ApiTags('clinic')
 @Controller('clinic')
 export class ClinicController {
@@ -12,7 +16,7 @@ export class ClinicController {
 
   @Post()
   @ApiOperation({ summary: 'Create a clinic' })
-  create(@Body() body: any) {
+  create(@Body() body: CreateClinicBody) {
     return { id: '1', ...body };
   }
 }
