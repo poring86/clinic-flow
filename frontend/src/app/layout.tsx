@@ -1,15 +1,16 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { Toaster } from "@/components/ui/sonner";
 import { ReactQueryProvider } from "@/providers/react-query";
 
-const manrope = Manrope({
-  variable: "--font-manrope",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -23,12 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body className={`${manrope.variable} antialiased`}>
+    <html lang="pt-BR" className="dark">
+      <body className={`${poppins.variable} antialiased font-sans`}>
         <ReactQueryProvider>
           <NuqsAdapter>{children}</NuqsAdapter>
         </ReactQueryProvider>
-        <Toaster position="bottom-center" richColors theme="light" />
+        <Toaster position="bottom-center" richColors theme="dark" />
       </body>
     </html>
   );
