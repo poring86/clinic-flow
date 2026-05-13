@@ -161,6 +161,25 @@ let AuthService = class AuthService {
                 });
             }
         }
+        const userClinic = await db_1.db
+            .select()
+            .from(schema_1.usersToClinicsTable)
+            .where((0, drizzle_orm_1.eq)(schema_1.usersToClinicsTable.userId, users[0].id));
+        if (userClinic.length === 0) {
+            const clinicId = (0, uuid_1.v4)();
+            await db_1.db.insert(schema_1.clinicsTable).values({
+                id: clinicId,
+                name: `${users[0].name}'s Clinic`,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            });
+            await db_1.db.insert(schema_1.usersToClinicsTable).values({
+                userId: users[0].id,
+                clinicId,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            });
+        }
         const token = (0, uuid_1.v4)();
         await db_1.db.insert(schema_1.sessionsTable).values({
             id: (0, uuid_1.v4)(),

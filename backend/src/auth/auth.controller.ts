@@ -15,6 +15,17 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
+type GoogleAuthUser = {
+  email: string;
+  name: string;
+  picture: string | null;
+  accessToken: string;
+};
+
+type GoogleAuthRequest = Request & {
+  user: GoogleAuthUser;
+};
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -47,13 +58,8 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleCallback(@Req() req: Request, @Res() res: Response) {
-    const googleUser = req.user as {
-      email: string;
-      name: string;
-      picture: string | null;
-      accessToken: string;
-    };
+  async googleCallback(@Req() req: GoogleAuthRequest, @Res() res: Response) {
+    const googleUser = req.user;
     const { token } = await this.authService.findOrCreateGoogleUser(googleUser);
     const frontendUrl =
       process.env.FRONTEND_URL || 'http://localhost:3000';
