@@ -23,7 +23,9 @@ export const SubscriptionPage = ({ userEmail }: SubscriptionPageProps) => {
         </PageHeaderContent>
       </PageHeader>
       <PageContent>
-        <SubscriptionPlan className="w-[350px]" userEmail={userEmail} />
+        <div className="flex w-full justify-start">
+          <SubscriptionPlan className="w-full max-w-[390px]" userEmail={userEmail} />
+        </div>
       </PageContent>
     </PageContainer>
   );

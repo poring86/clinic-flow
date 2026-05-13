@@ -55,9 +55,9 @@ export const DatePicker = ({
         <PopoverTrigger asChild>
           <Button
             id="date"
-            variant={"outline"}
+            variant={"default"}
             className={cn(
-              "justify-start text-left font-normal",
+              "h-11 min-w-[280px] justify-start border border-[#4f74ff]/60 bg-gradient-to-r from-[#2a58ff] to-[#3390ff] text-left font-medium text-white shadow-[0_8px_20px_rgba(35,114,255,0.34)] hover:brightness-110",
               !date && "text-muted-foreground",
             )}
           >
@@ -83,7 +83,10 @@ export const DatePicker = ({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent
+          className="w-auto border border-[#465592] bg-[#2a305a] p-0 text-white shadow-[0_20px_40px_rgba(10,14,34,0.45)]"
+          align="start"
+        >
           <Calendar
             initialFocus
             mode="range"

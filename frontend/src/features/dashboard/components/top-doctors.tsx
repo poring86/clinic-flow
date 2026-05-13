@@ -27,8 +27,11 @@ export const TopDoctors = ({ doctors }: TopDoctorsProps) => {
         </div>
 
         <div className="space-y-6">
-          {doctors.map((doctor) => (
-            <div key={doctor.id} className="flex items-center justify-between">
+          {doctors.map((doctor, index) => (
+            <div
+              key={`${doctor.id || doctor.name || "doctor"}-${index}`}
+              className="flex items-center justify-between"
+            >
               <div className="flex items-center gap-4">
                 <Avatar className="h-10 w-10">
                   <AvatarFallback className="bg-gray-100 text-lg font-medium text-gray-600">

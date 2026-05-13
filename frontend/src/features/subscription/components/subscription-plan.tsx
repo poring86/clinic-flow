@@ -45,41 +45,44 @@ export const SubscriptionPlan = ({
   };
 
   return (
-    <Card className={className}>
-      <CardHeader>
+    <Card
+      className={`overflow-hidden border border-white/12 bg-[linear-gradient(180deg,rgba(78,92,168,0.28)_0%,rgba(47,55,103,0.82)_100%)] shadow-[0_22px_50px_rgba(10,14,35,0.34)] backdrop-blur-sm ${className ?? ""}`}
+    >
+      <CardHeader className="space-y-5 p-6">
+        <div className="h-1.5 w-20 rounded-full bg-gradient-to-r from-[#57a6ff] via-[#7c8cff] to-[#b06aff]" />
         <div className="flex items-center justify-between">
-          <h3 className="text-2xl font-bold text-gray-900">Essential</h3>
+          <h3 className="text-2xl font-semibold text-[#f4f7ff]">Essential</h3>
           {active && (
-            <Badge className="bg-green-100 text-green-700 hover:bg-green-100">
+            <Badge className="border border-emerald-400/25 bg-emerald-500/16 text-emerald-200 hover:bg-emerald-500/16">
               Current
             </Badge>
           )}
         </div>
-        <p className="text-gray-600">
+        <p className="max-w-[26ch] text-sm leading-6 text-[#bdc9f3]">
           For independent professionals or small clinics
         </p>
-        <div className="flex items-baseline">
-          <span className="text-3xl font-bold text-gray-900">R$59</span>
-          <span className="ml-1 text-gray-600">/ month</span>
+        <div className="flex items-end gap-2">
+          <span className="text-5xl font-semibold tracking-tight text-white">R$59</span>
+          <span className="pb-1 text-base text-[#aebce7]">/ month</span>
         </div>
       </CardHeader>
 
-      <CardContent>
-        <div className="space-y-4 border-t border-gray-200 pt-6">
+      <CardContent className="p-6 pt-0">
+        <div className="space-y-4 border-t border-white/18 pt-6">
           {features.map((feature) => (
-            <div key={feature} className="flex items-start">
-              <div className="flex-shrink-0">
-                <CheckCircle2 className="h-5 w-5 text-green-500" />
+            <div key={feature} className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/14 ring-1 ring-emerald-400/30">
+                <CheckCircle2 className="h-4 w-4 text-emerald-300" />
               </div>
-              <p className="ml-3 text-gray-600">{feature}</p>
+              <p className="text-sm text-[#dbe4ff]">{feature}</p>
             </div>
           ))}
         </div>
 
         <div className="mt-8">
           <Button
-            className="w-full"
-            variant="outline"
+            className="h-11 w-full"
+            variant={active ? "outline" : "default"}
             onClick={active ? handleManagePlanClick : subscriptionCheckoutViewModel.subscribe}
             disabled={subscriptionCheckoutViewModel.isPending}
           >

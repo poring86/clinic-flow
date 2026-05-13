@@ -184,7 +184,9 @@ Browser
 
 ```
 doutor-agenda/
-├── docker-compose.yml
+├── docker-compose.yml             # Development stack
+├── docker-compose.prod.yml        # Production-like stack
+├── Makefile                       # Shortcuts for Docker workflows
 │
 ├── backend/                        # NestJS API
 │   └── src/
@@ -247,15 +249,40 @@ doutor-agenda/
 git clone <repo-url>
 cd doutor-agenda
 
-# Start all services (db + backend + frontend)
-docker compose up
+# Start the development stack (db + backend + frontend)
+make dev
 ```
 
 | Service  | URL                          |
 |----------|------------------------------|
-| Frontend | http://localhost:3001        |
-| Backend  | http://localhost:3000        |
-| Swagger  | http://localhost:3000/api    |
+| Frontend | http://localhost:3000        |
+| Backend  | http://localhost:3333        |
+| Swagger  | http://localhost:3333/api    |
+
+### Docker workflows
+
+```bash
+# Development: hot reload + source bind mounts
+make dev
+
+# Stop the development stack
+make dev-down
+
+# Production-like build and startup
+make prod
+
+# Build production images without starting containers
+make prod-build
+
+# Stop the production stack
+make prod-down
+```
+
+#### Workflow notes
+
+- `docker-compose.yml` is optimized for development with bind mounts and watch-friendly settings.
+- `docker-compose.prod.yml` runs the production targets from the multi-stage Dockerfiles.
+- The frontend production image uses Next.js standalone output for a smaller runtime image.
 
 ### Regenerating the API client (Orval)
 

@@ -1,4 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 import { AppSidebar } from "./app-sidebar";
 
@@ -20,8 +20,7 @@ export const NavigationShell = ({ children, session }: NavigationShellProps) => 
         hasClinic={Boolean(session.clinicId)}
       />
 
-      <main className="w-full">
-        <SidebarTrigger />
+      <main className="min-h-screen w-full bg-background">
         {children}
       </main>
     </SidebarProvider>

@@ -1,4 +1,4 @@
-name: doutor-agenda-dev
+name: doutor-agenda-prod
 
 services:
   db:
@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: doutor_agenda
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -21,17 +21,15 @@ services:
   backend:
     build:
       context: ./backend
-      target: development
-    command: npm run start:dev
-    volumes:
-      - ./backend:/app
-      - backend_node_modules:/app/node_modules
+      target: production
+    restart: unless-stopped
     ports:
-      - '3333:3333'
+      - "3333:3333"
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/doutor_agenda
       PORT: 3333
-      NODE_ENV: development
+      NODE_ENV: production
+      FRONTEND_URL: http://localhost:3000
     depends_on:
       db:
         condition: service_healthy
@@ -39,24 +37,16 @@ services:
   frontend:
     build:
       context: ./frontend
-      target: development
-    command: npm run dev
-    volumes:
-      - ./frontend:/app
-      - frontend_node_modules:/app/node_modules
-      - frontend_next:/app/.next
+      target: production
+    restart: unless-stopped
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       API_URL: http://backend:3333
       NEXT_PUBLIC_API_URL: http://localhost:3333
-      NODE_ENV: development
-      WATCHPACK_POLLING: "true"
+      NODE_ENV: production
     depends_on:
       - backend
 
 volumes:
   postgres_data:
-  backend_node_modules:
-  frontend_node_modules:
-  frontend_next:

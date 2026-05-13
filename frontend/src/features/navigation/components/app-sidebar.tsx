@@ -1,17 +1,11 @@
 "use client";
 
-import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -39,15 +33,37 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
     hasClinic,
   });
   const [collapsed, setCollapsed] = useState(true);
+  const collapseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleExpand = () => {
+    if (collapseTimeoutRef.current) {
+      clearTimeout(collapseTimeoutRef.current);
+      collapseTimeoutRef.current = null;
+    }
+
+    setCollapsed(false);
+  };
+
+  const handleCollapse = () => {
+    if (collapseTimeoutRef.current) {
+      clearTimeout(collapseTimeoutRef.current);
+    }
+
+    collapseTimeoutRef.current = setTimeout(() => {
+      setCollapsed(true);
+      collapseTimeoutRef.current = null;
+    }, 180);
+  };
 
   return (
     <Sidebar
-      onMouseEnter={() => setCollapsed(false)}
-      onMouseLeave={() => setCollapsed(true)}
-      className={`min-h-screen ${collapsed ? "w-20" : "w-64"} border-r border-[#27336f] text-white shadow-2xl transition-[width] duration-500 ease-linear [&_[data-slot=sidebar-inner]]:!bg-[linear-gradient(180deg,#0f172a_0%,#172554_52%,#4f46e5_100%)] [&_[data-slot=sidebar-inner]]:text-white [&_[data-slot=sidebar-inner]]:border-r [&_[data-slot=sidebar-inner]]:border-[#27336f]`}
-      style={{ boxShadow: "0 0 24px 0 #25306f66" }}
+      variant="floating"
+      onMouseEnter={handleExpand}
+      onMouseLeave={handleCollapse}
+      className={`${collapsed ? "w-24" : "w-64"} text-white shadow-2xl transition-[width] duration-300 ease-out motion-reduce:transition-none [&_[data-slot=sidebar-inner]]:!bg-[linear-gradient(180deg,#3490ff_0%,#3b82f6_44%,#4f66ee_78%,#5d56df_100%)] [&_[data-slot=sidebar-inner]]:text-white [&_[data-slot=sidebar-inner]]:rounded-[22px] [&_[data-slot=sidebar-inner]]:border [&_[data-slot=sidebar-inner]]:border-[#7d92e5]`}
+      style={{ boxShadow: "0 18px 42px -14px #142a6f8a" }}
     >
-      <SidebarHeader className="flex items-center justify-center border-b border-white/10 bg-transparent py-6">
+      <SidebarHeader className="flex items-center justify-center border-b border-white/20 bg-transparent py-6">
         <Link
           href="/dashboard"
           className="flex w-full items-center justify-start overflow-hidden px-4 transition-all duration-500 ease-linear"
@@ -61,16 +77,16 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
             style={{ objectFit: "contain" }}
           />
           <span
-            className={`origin-left whitespace-nowrap pl-3 text-[18px] font-light tracking-[0.18em] text-white will-change-[max-width,opacity] transition-[max-width,opacity] duration-500 ease-linear ${collapsed ? "max-w-0 opacity-0" : "max-w-[180px] opacity-100"}`}
+            className={`origin-left whitespace-nowrap pl-3 text-[18px] font-light tracking-[0.18em] text-white will-change-[max-width,opacity] transition-[max-width,opacity] duration-300 ease-out ${collapsed ? "max-w-0 opacity-0" : "max-w-[180px] opacity-100"}`}
           >
             CLIC FLOW
           </span>
         </Link>
       </SidebarHeader>
 
-      <SidebarContent className="flex-1 px-2 py-6">
+      <SidebarContent className="flex-1 overflow-x-hidden px-2 py-6">
         <SidebarGroup>
-          <SidebarGroupLabel className={`mb-2 text-[10px] uppercase tracking-[0.34em] text-white/55 transition-all duration-500 ease-linear ${collapsed ? "pl-0 text-center" : "pl-2"}`}>
+          <SidebarGroupLabel className={`mb-2 pl-3 text-left text-[10px] uppercase tracking-[0.34em] text-white/55 transition-[opacity] duration-300 ease-linear ${collapsed ? "opacity-0" : "opacity-100"}`}>
             Menu
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -83,12 +99,12 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
                     <SidebarMenuButton
                       asChild
                       isActive={active}
-                      className={`rounded-xl px-3 py-3 text-[12px] font-light tracking-[0.08em] transition-all duration-500 ease-linear ${active ? "bg-[#1c2758] shadow-[inset_3px_0_0_0_#38bdf8,0_8px_24px_rgba(0,0,0,0.2)]" : "hover:bg-white/10"}`}
+                      className={`h-11 justify-start rounded-xl px-2.5 py-2 text-[12px] font-medium tracking-[0.06em] transition-all duration-500 ease-linear ${active ? "border border-[#2a3c85]/85 bg-gradient-to-r from-[#213474] to-[#314a9f] text-[#f5f8ff] shadow-[0_10px_24px_rgba(11,20,56,0.5)]" : "text-[#ecf3ff] hover:bg-[#2f4fa8]/38 hover:text-white"}`}
                     >
-                      <Link href={item.url} className="grid w-full grid-cols-[24px_minmax(0,1fr)] items-center gap-3">
-                        <item.icon className={`h-6 w-6 shrink-0 ${active ? "text-[#38bdf8]" : "text-white/80"}`} />
+                      <Link href={item.url} className="flex w-full min-w-0 items-center justify-start gap-3">
+                        <item.icon className={`h-5 w-5 shrink-0 ${active ? "text-white" : "text-[#dce8ff]"}`} />
                         <span
-                          className={`overflow-hidden whitespace-nowrap will-change-[max-width,opacity] transition-[max-width,opacity] duration-500 ease-linear ${collapsed ? "max-w-0 opacity-0" : "max-w-[180px] opacity-100"}`}
+                          className={`block overflow-hidden whitespace-nowrap pt-px text-left leading-[1.1] will-change-[max-width,opacity] transition-[max-width,opacity] duration-300 ease-out ${collapsed ? "max-w-0 opacity-0" : "max-w-[180px] opacity-100"}`}
                         >
                           {item.title}
                         </span>
@@ -102,7 +118,7 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
         </SidebarGroup>
 
         <SidebarGroup className="mt-8">
-          <SidebarGroupLabel className={`mb-2 text-[10px] uppercase tracking-[0.34em] text-white/55 transition-all duration-500 ease-linear ${collapsed ? "pl-0 text-center" : "pl-2"}`}>
+          <SidebarGroupLabel className={`mb-2 pl-3 text-left text-[10px] uppercase tracking-[0.34em] text-white/55 transition-[opacity] duration-300 ease-linear ${collapsed ? "opacity-0" : "opacity-100"}`}>
             Outros
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -115,12 +131,12 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
                     <SidebarMenuButton
                       asChild
                       isActive={active}
-                      className={`rounded-xl px-3 py-3 text-[12px] font-light tracking-[0.08em] transition-all duration-500 ease-linear ${active ? "bg-[#1c2758] shadow-[inset_3px_0_0_0_#38bdf8,0_8px_24px_rgba(0,0,0,0.2)]" : "hover:bg-white/10"}`}
+                      className={`h-11 justify-start rounded-xl px-2.5 py-2 text-[12px] font-medium tracking-[0.06em] transition-all duration-500 ease-linear ${active ? "border border-[#2a3c85]/85 bg-gradient-to-r from-[#213474] to-[#314a9f] text-[#f5f8ff] shadow-[0_10px_24px_rgba(11,20,56,0.5)]" : "text-[#ecf3ff] hover:bg-[#2f4fa8]/38 hover:text-white"}`}
                     >
-                      <Link href={item.url} className="grid w-full grid-cols-[24px_minmax(0,1fr)] items-center gap-3">
-                        <item.icon className={`h-6 w-6 shrink-0 ${active ? "text-[#38bdf8]" : "text-white/80"}`} />
+                      <Link href={item.url} className="flex w-full min-w-0 items-center justify-start gap-3">
+                        <item.icon className={`h-5 w-5 shrink-0 ${active ? "text-white" : "text-[#dce8ff]"}`} />
                         <span
-                          className={`overflow-hidden whitespace-nowrap will-change-[max-width,opacity] transition-[max-width,opacity] duration-500 ease-linear ${collapsed ? "max-w-0 opacity-0" : "max-w-[180px] opacity-100"}`}
+                          className={`block overflow-hidden whitespace-nowrap pt-px text-left leading-[1.1] will-change-[max-width,opacity] transition-[max-width,opacity] duration-300 ease-out ${collapsed ? "max-w-0 opacity-0" : "max-w-[180px] opacity-100"}`}
                         >
                           {item.title}
                         </span>
@@ -134,38 +150,46 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-white/10 p-6">
+      <SidebarFooter className="border-t border-white/20 p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton
-                  size="lg"
-                  className={`flex w-full items-center gap-3 rounded-xl px-2 py-2 transition-all duration-500 ease-linear hover:bg-white/10 ${collapsed ? "justify-center" : ""}`}
-                >
-                  <Avatar className="h-12 w-12 border border-white/10">
-                    <AvatarFallback className="bg-[#1c2758] text-xl text-white">
+            <div className="space-y-2 rounded-2xl border border-white/18 bg-white/8 p-2 transition-all duration-200 ease-linear hover:border-white/28 hover:bg-white/14">
+              <div className="grid w-full grid-cols-[40px_minmax(0,1fr)] items-center gap-2.5">
+                <div className="flex h-10 w-10 items-center justify-center">
+                  <Avatar className="h-10 w-10 border border-white/30 shadow-[0_6px_14px_rgba(8,16,48,0.35)]">
+                    <AvatarFallback className="bg-[#142b6a] text-xl text-white">
                       {appSidebarViewModel.initials}
                     </AvatarFallback>
                   </Avatar>
-                  <div
-                    className={`flex min-w-0 flex-col overflow-hidden will-change-[max-width,opacity] transition-[max-width,opacity] duration-500 ease-linear ${collapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}
-                  >
-                    <p className="truncate text-[12px] font-light tracking-[0.08em]">{appSidebarViewModel.clinicStatusLabel}</p>
-                    <p className="truncate text-[11px] text-white/75">{appSidebarViewModel.userEmail}</p>
-                  </div>
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="border border-white/10 bg-[#20243a] text-white shadow-lg">
-                <DropdownMenuItem
-                  onClick={appSidebarViewModel.handleSignOut}
-                  className="flex cursor-pointer items-center gap-2 text-[#ff7b7b] focus:bg-white/10 focus:text-white"
+                </div>
+                <div
+                  className={`min-w-0 overflow-hidden will-change-[max-width,opacity] transition-[max-width,opacity] duration-300 ease-out ${collapsed ? "max-w-0 opacity-0" : "max-w-[160px] opacity-100"}`}
                 >
-                  <LogOut />
-                  {!collapsed && "Sair"}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <p className="truncate text-left text-[11px] font-medium tracking-[0.08em] text-white/90">
+                    {appSidebarViewModel.clinicStatusLabel}
+                  </p>
+                  <p className="truncate text-left text-[11px] leading-tight text-[#dbe7ff]">
+                    {appSidebarViewModel.userEmail}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={appSidebarViewModel.handleSignOut}
+                aria-label="Sign out"
+                className="flex h-10 w-full items-center rounded-xl border border-transparent px-2.5 text-sm font-medium text-[#ffd1d1] transition-colors hover:border-white/15 hover:bg-[#ff6b6b]/18 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/35"
+              >
+                <span className="flex h-4 w-4 shrink-0 items-center justify-center">
+                  <LogOut className="h-4 w-4" />
+                </span>
+                <span
+                  className={`overflow-hidden whitespace-nowrap pl-2 text-left will-change-[max-width,opacity] transition-[max-width,opacity] duration-300 ease-out ${collapsed ? "max-w-0 opacity-0" : "max-w-[120px] opacity-100"}`}
+                >
+                  Sign out
+                </span>
+              </button>
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
