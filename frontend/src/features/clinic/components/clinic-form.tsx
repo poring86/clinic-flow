@@ -1,7 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -28,6 +29,7 @@ interface ClinicFormProps {
 }
 
 export const ClinicForm = ({ onSuccess }: ClinicFormProps) => {
+  const router = useRouter();
   const form = useForm<CreateClinicFormValues>({
     resolver: zodResolver(createClinicSchema),
     defaultValues: {
@@ -44,6 +46,12 @@ export const ClinicForm = ({ onSuccess }: ClinicFormProps) => {
 
   const onSubmit = (values: CreateClinicFormValues) => {
     createClinicViewModel.submit(values);
+  };
+
+  const handleLogoutForLater = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.push("/authentication");
+    router.refresh();
   };
 
   return (
@@ -63,16 +71,33 @@ export const ClinicForm = ({ onSuccess }: ClinicFormProps) => {
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={createClinicViewModel.isPending}
-        >
-          {createClinicViewModel.isPending && (
-            <Loader2 className="mr-2 animate-spin" />
-          )}
-          Create clinic
-        </Button>
+        <div className="space-y-2">
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={createClinicViewModel.isPending}
+          >
+            {createClinicViewModel.isPending && (
+              <Loader2 className="mr-2 animate-spin" />
+            )}
+            Create clinic
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={handleLogoutForLater}
+            disabled={createClinicViewModel.isPending}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Sign out
+          </Button>
+
+          <p className="text-center text-xs text-muted-foreground">
+            You can create your clinic later.
+          </p>
+        </div>
       </form>
     </Form>
   );

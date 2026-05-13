@@ -20,7 +20,7 @@ export const SummaryCard = ({ clinicId, from, to }: SummaryCardProps) => {
     return <div className="h-20 bg-muted animate-pulse rounded" />;
   }
 
-  if (error) {
+  if (error || !summary || !summary.totalRevenue) {
     return (
       <div className="p-4 bg-destructive/10 text-destructive rounded">
         Failed to load summary

@@ -60,7 +60,7 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
       variant="floating"
       onMouseEnter={handleExpand}
       onMouseLeave={handleCollapse}
-      className={`${collapsed ? "w-24" : "w-64"} text-white shadow-2xl transition-[width] duration-300 ease-out motion-reduce:transition-none [&_[data-slot=sidebar-inner]]:!bg-[linear-gradient(180deg,#3490ff_0%,#3b82f6_44%,#4f66ee_78%,#5d56df_100%)] [&_[data-slot=sidebar-inner]]:text-white [&_[data-slot=sidebar-inner]]:rounded-[22px] [&_[data-slot=sidebar-inner]]:border [&_[data-slot=sidebar-inner]]:border-[#7d92e5]`}
+      className={`${collapsed ? "w-24" : "w-64"} text-white shadow-2xl transition-[width] duration-300 ease-out motion-reduce:transition-none [&_[data-slot=sidebar-inner]]:!bg-[linear-gradient(180deg,#3490ff_0%,#3b82f6_44%,#4f66ee_78%,#5d56df_100%)] [&_[data-slot=sidebar-inner]]:text-white [&_[data-slot=sidebar-inner]]:rounded-[22px] [&_[data-slot=sidebar-inner]]:border-0`}
       style={{ boxShadow: "0 18px 42px -14px #142a6f8a" }}
     >
       <SidebarHeader className="flex items-center justify-center border-b border-white/20 bg-transparent py-6">
@@ -99,10 +99,15 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
                     <SidebarMenuButton
                       asChild
                       isActive={active}
-                      className={`h-11 justify-start rounded-xl px-2.5 py-2 text-[12px] font-medium tracking-[0.06em] transition-all duration-500 ease-linear ${active ? "border border-[#2a3c85]/85 bg-gradient-to-r from-[#213474] to-[#314a9f] text-[#f5f8ff] shadow-[0_10px_24px_rgba(11,20,56,0.5)]" : "text-[#ecf3ff] hover:bg-[#2f4fa8]/38 hover:text-white"}`}
+                      className={`h-11 justify-start rounded-xl border px-2.5 py-2 text-[12px] font-medium tracking-[0.06em] transition-colors duration-300 ease-linear ${active ? "border-[#2a3c85]/85 bg-gradient-to-r from-[#213474] to-[#314a9f] text-[#f5f8ff] shadow-[0_10px_24px_rgba(11,20,56,0.5)]" : "border-transparent text-[#ecf3ff] hover:bg-[#2f4fa8]/38 hover:text-white"}`}
                     >
-                      <Link href={item.url} className="flex w-full min-w-0 items-center justify-start gap-3">
-                        <item.icon className={`h-5 w-5 shrink-0 ${active ? "text-white" : "text-[#dce8ff]"}`} />
+                      <Link
+                        href={item.url}
+                        className="flex w-full min-w-0 items-center justify-start gap-3"
+                      >
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+                          <item.icon className={`h-5 w-5 ${active ? "text-white" : "text-[#dce8ff]"}`} />
+                        </span>
                         <span
                           className={`block overflow-hidden whitespace-nowrap pt-px text-left leading-[1.1] will-change-[max-width,opacity] transition-[max-width,opacity] duration-300 ease-out ${collapsed ? "max-w-0 opacity-0" : "max-w-[180px] opacity-100"}`}
                         >
@@ -131,10 +136,15 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
                     <SidebarMenuButton
                       asChild
                       isActive={active}
-                      className={`h-11 justify-start rounded-xl px-2.5 py-2 text-[12px] font-medium tracking-[0.06em] transition-all duration-500 ease-linear ${active ? "border border-[#2a3c85]/85 bg-gradient-to-r from-[#213474] to-[#314a9f] text-[#f5f8ff] shadow-[0_10px_24px_rgba(11,20,56,0.5)]" : "text-[#ecf3ff] hover:bg-[#2f4fa8]/38 hover:text-white"}`}
+                      className={`h-11 justify-start rounded-xl border px-2.5 py-2 text-[12px] font-medium tracking-[0.06em] transition-colors duration-300 ease-linear ${active ? "border-[#2a3c85]/85 bg-gradient-to-r from-[#213474] to-[#314a9f] text-[#f5f8ff] shadow-[0_10px_24px_rgba(11,20,56,0.5)]" : "border-transparent text-[#ecf3ff] hover:bg-[#2f4fa8]/38 hover:text-white"}`}
                     >
-                      <Link href={item.url} className="flex w-full min-w-0 items-center justify-start gap-3">
-                        <item.icon className={`h-5 w-5 shrink-0 ${active ? "text-white" : "text-[#dce8ff]"}`} />
+                      <Link
+                        href={item.url}
+                        className="flex w-full min-w-0 items-center justify-start gap-3"
+                      >
+                        <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+                          <item.icon className={`h-5 w-5 ${active ? "text-white" : "text-[#dce8ff]"}`} />
+                        </span>
                         <span
                           className={`block overflow-hidden whitespace-nowrap pt-px text-left leading-[1.1] will-change-[max-width,opacity] transition-[max-width,opacity] duration-300 ease-out ${collapsed ? "max-w-0 opacity-0" : "max-w-[180px] opacity-100"}`}
                         >

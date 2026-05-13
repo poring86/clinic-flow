@@ -9,9 +9,8 @@ import {
   accountsTable,
   sessionsTable,
   usersToClinicsTable,
-  clinicsTable,
 } from '../db/schema';
-import { and, eq } from 'drizzle-orm'; // and is used in findOrCreateGoogleUser & login checks
+import { and, eq } from 'drizzle-orm';
 import * as bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { RegisterDto } from './dto/register.dto';
@@ -145,28 +144,6 @@ export class AuthService {
           updatedAt: new Date(),
         });
       }
-    }
-
-    // Check if user has a clinic, if not create default one
-    const userClinic = await db
-      .select()
-      .from(usersToClinicsTable)
-      .where(eq(usersToClinicsTable.userId, users[0].id));
-
-    if (userClinic.length === 0) {
-      const clinicId = uuidv4();
-      await db.insert(clinicsTable).values({
-        id: clinicId,
-        name: `${users[0].name}'s Clinic`,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
-      await db.insert(usersToClinicsTable).values({
-        userId: users[0].id,
-        clinicId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
     }
 
     const token = uuidv4();

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 import {
   PageActions,
@@ -42,6 +43,11 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
 
   const session = await getServerSession();
   const clinicId = session?.clinicId ?? "";
+
+  // Redirect to clinic form if no clinic is associated
+  if (!clinicId) {
+    redirect("/clinic-form");
+  }
 
   // Pass from/to to TodayAppointmentsContainer as well for consistency
   // (previously it wasn't using date filters)
