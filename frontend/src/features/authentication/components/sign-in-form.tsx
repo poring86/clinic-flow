@@ -60,8 +60,10 @@ export const SignInForm = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    toast.info("Login social não disponível");
+  const handleGoogleLogin = () => {
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333";
+    window.location.href = `${backendUrl}/auth/google`;
   };
 
   return (

@@ -29,6 +29,9 @@ services:
       DATABASE_URL: postgres://postgres:postgres@db:5432/doutor_agenda
       PORT: 3333
       NODE_ENV: production
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_CALLBACK_URL: http://localhost:3333/auth/google/callback
       FRONTEND_URL: http://localhost:3000
     depends_on:
       db:

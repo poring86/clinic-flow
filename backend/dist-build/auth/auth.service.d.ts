@@ -17,6 +17,19 @@ export declare class AuthService {
             name: string;
         };
     }>;
+    findOrCreateGoogleUser(googleUser: {
+        email: string;
+        name: string;
+        picture: string | null;
+        accessToken: string;
+    }): Promise<{
+        token: string;
+        user: {
+            id: string;
+            email: string;
+            name: string;
+        };
+    }>;
     getSession(token: string): Promise<{
         id: string;
         email: string;

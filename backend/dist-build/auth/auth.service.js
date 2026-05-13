@@ -114,6 +114,71 @@ let AuthService = class AuthService {
             user: { id: user[0].id, email: user[0].email, name: user[0].name },
         };
     }
+    async findOrCreateGoogleUser(googleUser) {
+        let users = await db_1.db
+            .select()
+            .from(schema_1.usersTable)
+            .where((0, drizzle_orm_1.eq)(schema_1.usersTable.email, googleUser.email));
+        if (users.length === 0) {
+            const userId = (0, uuid_1.v4)();
+            await db_1.db.insert(schema_1.usersTable).values({
+                id: userId,
+                name: googleUser.name,
+                email: googleUser.email,
+                emailVerified: true,
+                image: googleUser.picture,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            });
+            await db_1.db.insert(schema_1.accountsTable).values({
+                id: (0, uuid_1.v4)(),
+                accountId: googleUser.email,
+                providerId: 'google',
+                userId,
+                accessToken: googleUser.accessToken,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            });
+            users = await db_1.db
+                .select()
+                .from(schema_1.usersTable)
+                .where((0, drizzle_orm_1.eq)(schema_1.usersTable.email, googleUser.email));
+        }
+        else {
+            const existingAccount = await db_1.db
+                .select()
+                .from(schema_1.accountsTable)
+                .where((0, drizzle_orm_1.and)((0, drizzle_orm_1.eq)(schema_1.accountsTable.userId, users[0].id), (0, drizzle_orm_1.eq)(schema_1.accountsTable.providerId, 'google')));
+            if (existingAccount.length === 0) {
+                await db_1.db.insert(schema_1.accountsTable).values({
+                    id: (0, uuid_1.v4)(),
+                    accountId: googleUser.email,
+                    providerId: 'google',
+                    userId: users[0].id,
+                    accessToken: googleUser.accessToken,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                });
+            }
+        }
+        const token = (0, uuid_1.v4)();
+        await db_1.db.insert(schema_1.sessionsTable).values({
+            id: (0, uuid_1.v4)(),
+            userId: users[0].id,
+            token,
+            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
+        return {
+            token,
+            user: {
+                id: users[0].id,
+                email: users[0].email,
+                name: users[0].name,
+            },
+        };
+    }
     async getSession(token) {
         const session = await db_1.db
             .select()

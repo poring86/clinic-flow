@@ -1,3 +1,4 @@
+import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -26,4 +27,6 @@ export declare class AuthController {
     deleteSession(token: string): Promise<{
         success: boolean;
     }>;
+    googleLogin(): void;
+    googleCallback(req: Request, res: Response): Promise<void>;
 }

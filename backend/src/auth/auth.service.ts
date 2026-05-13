@@ -10,7 +10,7 @@ import {
   sessionsTable,
   usersToClinicsTable,
 } from '../db/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import * as bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { RegisterDto } from './dto/register.dto';
@@ -85,6 +85,84 @@ export class AuthService {
     return {
       token,
       user: { id: user[0].id, email: user[0].email, name: user[0].name },
+    };
+  }
+
+  async findOrCreateGoogleUser(googleUser: {
+    email: string;
+    name: string;
+    picture: string | null;
+    accessToken: string;
+  }) {
+    let users = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.email, googleUser.email));
+
+    if (users.length === 0) {
+      const userId = uuidv4();
+      await db.insert(usersTable).values({
+        id: userId,
+        name: googleUser.name,
+        email: googleUser.email,
+        emailVerified: true,
+        image: googleUser.picture,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await db.insert(accountsTable).values({
+        id: uuidv4(),
+        accountId: googleUser.email,
+        providerId: 'google',
+        userId,
+        accessToken: googleUser.accessToken,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      users = await db
+        .select()
+        .from(usersTable)
+        .where(eq(usersTable.email, googleUser.email));
+    } else {
+      const existingAccount = await db
+        .select()
+        .from(accountsTable)
+        .where(
+          and(
+            eq(accountsTable.userId, users[0].id),
+            eq(accountsTable.providerId, 'google'),
+          ),
+        );
+      if (existingAccount.length === 0) {
+        await db.insert(accountsTable).values({
+          id: uuidv4(),
+          accountId: googleUser.email,
+          providerId: 'google',
+          userId: users[0].id,
+          accessToken: googleUser.accessToken,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+      }
+    }
+
+    const token = uuidv4();
+    await db.insert(sessionsTable).values({
+      id: uuidv4(),
+      userId: users[0].id,
+      token,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    return {
+      token,
+      user: {
+        id: users[0].id,
+        email: users[0].email,
+        name: users[0].name,
+      },
     };
   }
 
