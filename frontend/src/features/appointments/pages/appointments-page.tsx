@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import type {
   AppointmentDto as Appointment,
@@ -8,6 +10,7 @@ import type {
   PatientDto as Patient,
 } from "@/api/schemas";
 import { DataTable } from "@/components/ui/data-table";
+import { Button } from "@/components/ui/button";
 import {
   PageContainer,
   PageContent,
@@ -26,26 +29,36 @@ interface AppointmentsPageProps {
   clinicId: string;
 }
 
+const PAGE_SIZE = 10;
+
+interface PaginatedResponse {
+  data: Appointment[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
 export const AppointmentsPage = ({ clinicId }: AppointmentsPageProps) => {
+  const [currentPage, setCurrentPage] = useState(1);
   const baseUrl = getApiBaseUrl();
 
-  const { data: appointments = [] } = useQuery({
-    queryKey: appointmentsQueryKeys.list(clinicId),
+  const { data: paginatedData } = useQuery({
+    queryKey: appointmentsQueryKeys.list(clinicId, currentPage),
     enabled: !!clinicId,
     queryFn: async () => {
       const res = await fetch(
-        `${baseUrl}/appointment?clinicId=${encodeURIComponent(clinicId)}`,
+        `${baseUrl}/appointment?clinicId=${encodeURIComponent(clinicId)}&page=${currentPage}&pageSize=${PAGE_SIZE}`,
         { method: "GET" },
       );
       if (!res.ok) throw new Error("Failed to fetch appointments");
-      return (await res.json()) as Appointment[];
+      return (await res.json()) as PaginatedResponse;
     },
-    select: (data) =>
-      [...data].sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-      ),
   });
+
+  const appointments = paginatedData?.data ?? [];
+  const totalPages = paginatedData?.totalPages ?? 0;
+  const total = paginatedData?.total ?? 0;
 
   const { data: doctors = [] } = useQuery({
     queryKey: appointmentsQueryKeys.doctors(clinicId),
@@ -85,6 +98,14 @@ export const AppointmentsPage = ({ clinicId }: AppointmentsPageProps) => {
     };
   });
 
+  const handlePreviousPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
   return (
     <PageContainer>
       <PageHeader>
@@ -96,7 +117,10 @@ export const AppointmentsPage = ({ clinicId }: AppointmentsPageProps) => {
         </PageHeaderContent>
       </PageHeader>
       <PageContent>
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-between items-center mb-4">
+          <div className="text-sm text-muted-foreground">
+            Total: <strong>{total}</strong> appointments
+          </div>
           <AddAppointmentButton
             patients={patients}
             doctors={doctors}
@@ -107,6 +131,31 @@ export const AppointmentsPage = ({ clinicId }: AppointmentsPageProps) => {
           data={appointmentsWithRelations}
           columns={appointmentsTableColumns}
         />
+        <div className="flex items-center justify-between mt-6 pt-4 border-t">
+          <div className="text-sm text-muted-foreground">
+            Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages || totalPages === 0}
+            >
+              Next
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+        </div>
       </PageContent>
     </PageContainer>
   );

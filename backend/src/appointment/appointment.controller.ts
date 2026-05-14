@@ -12,6 +12,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { AppointmentDto } from './dto/appointment.dto';
+import { PaginatedAppointmentDto } from './dto/paginated-appointment.dto';
 import { AppointmentService } from './appointment.service';
 
 @ApiTags('appointment')
@@ -20,12 +21,18 @@ export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List all appointments' })
-  @ApiResponse({ status: 200, type: [AppointmentDto] })
+  @ApiOperation({ summary: 'List appointments with pagination' })
+  @ApiResponse({ status: 200, type: PaginatedAppointmentDto })
   async findAll(
     @Query('clinicId') clinicId?: string,
-  ): Promise<AppointmentDto[]> {
-    return this.appointmentService.findAll(clinicId);
+    @Query('page') page: string = '1',
+    @Query('pageSize') pageSize: string = '10',
+  ): Promise<PaginatedAppointmentDto> {
+    return this.appointmentService.findAll(
+      clinicId,
+      parseInt(page, 10),
+      parseInt(pageSize, 10),
+    );
   }
 
   @Post()

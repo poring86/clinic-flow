@@ -24,7 +24,7 @@ export const useCreateAppointmentViewModel = ({
       toast.success("Appointment created successfully.");
       onSuccess?.();
       await queryClient.invalidateQueries({
-        queryKey: appointmentsQueryKeys.list(clinicId),
+        queryKey: ["appointments", clinicId],
       });
     },
     onError: (error: unknown) => {

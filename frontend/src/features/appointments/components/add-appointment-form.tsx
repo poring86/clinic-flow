@@ -311,38 +311,40 @@ const AddAppointmentForm = ({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="time"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Time</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  disabled={!isDateTimeEnabled || !selectedDate}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a time" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {availableTimes?.map((time: AvailableTime) => (
-                      <SelectItem
-                        key={time.value}
-                        value={time.value}
-                        disabled={!time.available}
-                      >
-                        {time.label} {!time.available && "(Unavailable)"}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {isDateTimeEnabled && (
+            <FormField
+              control={form.control}
+              name="time"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Time</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={!selectedDate}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a time" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {availableTimes?.map((time: AvailableTime) => (
+                        <SelectItem
+                          key={time.value}
+                          value={time.value}
+                          disabled={!time.available}
+                        >
+                          {time.label} {!time.available && "(Unavailable)"}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <DialogFooter>
             <Button type="submit" disabled={createAppointmentViewModel.isPending}>
