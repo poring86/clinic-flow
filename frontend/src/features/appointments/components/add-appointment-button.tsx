@@ -26,7 +26,7 @@ export const AddAppointmentButton = ({
     <>
       <Button type="button" onClick={() => setIsOpen(true)}>
         <Plus className="mr-2 h-4 w-4" />
-        Novo agendamento
+        New appointment
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

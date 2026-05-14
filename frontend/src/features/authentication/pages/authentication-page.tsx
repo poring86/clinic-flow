@@ -7,8 +7,8 @@ export const AuthenticationPage = () => {
     <div className="flex h-screen w-screen items-center justify-center">
       <Tabs defaultValue="login" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="login">Entrar</TabsTrigger>
-          <TabsTrigger value="register">Criar conta</TabsTrigger>
+          <TabsTrigger value="login">Sign in</TabsTrigger>
+          <TabsTrigger value="register">Create account</TabsTrigger>
         </TabsList>
         <TabsContent value="login">
           <SignInForm />

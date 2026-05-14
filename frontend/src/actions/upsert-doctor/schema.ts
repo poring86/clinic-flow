@@ -4,33 +4,33 @@ export const upsertDoctorSchema = z
   .object({
     id: z.string().optional(),
     name: z.string().trim().min(1, {
-      message: "Nome é obrigatório.",
+      message: "Name is required.",
     }),
     specialty: z.string().trim().min(1, {
-      message: "Especialidade é obrigatória.",
+      message: "Specialty is required.",
     }),
     appointmentPriceInCents: z.number().min(1, {
-      message: "Preço da consulta é obrigatório.",
+      message: "Appointment price is required.",
     }),
     availableFromWeekDay: z
       .number()
-      .min(0, "Dia da semana de início é obrigatório.")
+      .min(0, "Start weekday is required.")
       .max(
         6,
-        "Dia da semana de início deve ser entre 0 (Domingo) e 6 (Sábado).",
+        "Start weekday must be between 0 (Sunday) and 6 (Saturday).",
       ),
     availableToWeekDay: z
       .number()
-      .min(0, "Dia da semana de término é obrigatório.")
+      .min(0, "End weekday is required.")
       .max(
         6,
-        "Dia da semana de término deve ser entre 0 (Domingo) e 6 (Sábado).",
+        "End weekday must be between 0 (Sunday) and 6 (Saturday).",
       ),
     availableFromTime: z.string().min(1, {
-      message: "Hora de início é obrigatória.",
+      message: "Start time is required.",
     }),
     availableToTime: z.string().min(1, {
-      message: "Hora de término é obrigatória.",
+      message: "End time is required.",
     }),
   })
   .refine(
@@ -39,7 +39,7 @@ export const upsertDoctorSchema = z
     },
     {
       message:
-        "O horário de início não pode ser anterior ao horário de término.",
+        "Start time cannot be earlier than end time.",
       path: ["availableToTime"],
     },
   );

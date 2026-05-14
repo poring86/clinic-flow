@@ -40,16 +40,16 @@ import { getApiBaseUrl } from "@/lib/api-base-url";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, {
-    message: "Nome é obrigatório.",
+    message: "Name is required.",
   }),
   email: z.string().email({
-    message: "Email inválido.",
+    message: "Invalid email.",
   }),
   phoneNumber: z.string().trim().min(1, {
-    message: "Número de telefone é obrigatório.",
+    message: "Phone number is required.",
   }),
   sex: z.enum(["male", "female"], {
-    required_error: "Sexo é obrigatório.",
+    required_error: "Sex is required.",
   }),
 });
 
@@ -133,18 +133,18 @@ const UpsertPatientForm = ({
               queryClient.invalidateQueries({
                 queryKey: getPatientControllerFindAllQueryKey(),
               });
-              toast.success("Paciente atualizado com sucesso.");
+              toast.success("Patient updated successfully.");
               onSuccess?.();
             },
             onError: () => {
-              toast.error("Erro ao atualizar paciente.");
+              toast.error("Error updating patient.");
             },
           },
         );
       } else {
         const resolvedClinicId = clinicId ?? patient?.clinicId;
         if (!resolvedClinicId) {
-          toast.error("Erro ao criar paciente.");
+          toast.error("Error creating patient.");
           return;
         }
 
@@ -155,11 +155,11 @@ const UpsertPatientForm = ({
               queryClient.invalidateQueries({
                 queryKey: getPatientControllerFindAllQueryKey(),
               });
-              toast.success("Paciente criado com sucesso.");
+              toast.success("Patient created successfully.");
               onSuccess?.();
             },
             onError: () => {
-              toast.error("Erro ao criar paciente.");
+              toast.error("Error creating patient.");
             },
           },
         );
@@ -175,12 +175,12 @@ const UpsertPatientForm = ({
     <DialogContent>
       <DialogHeader>
         <DialogTitle>
-          {patient ? patient.name : "Adicionar paciente"}
+          {patient ? patient.name : "Add patient"}
         </DialogTitle>
         <DialogDescription>
           {patient
-            ? "Edite as informações desse paciente."
-            : "Adicione um novo paciente."}
+            ? "Edit this patient's information."
+            : "Add a new patient."}
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>
@@ -190,10 +190,10 @@ const UpsertPatientForm = ({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome do paciente</FormLabel>
+                <FormLabel>Patient name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Digite o nome completo do paciente"
+                    placeholder="Enter the patient's full name"
                     {...field}
                   />
                 </FormControl>
@@ -223,7 +223,7 @@ const UpsertPatientForm = ({
             name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Número de telefone</FormLabel>
+                <FormLabel>Phone number</FormLabel>
                 <FormControl>
                   <PatternFormat
                     format="(##) #####-####"
@@ -245,19 +245,19 @@ const UpsertPatientForm = ({
             name="sex"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Sexo</FormLabel>
+                <FormLabel>Sex</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione o sexo" />
+                      <SelectValue placeholder="Select sex" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="male">Masculino</SelectItem>
-                    <SelectItem value="female">Feminino</SelectItem>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -270,7 +270,7 @@ const UpsertPatientForm = ({
               disabled={isPending}
               className="w-full"
             >
-              {isPending ? "Salvando..." : "Salvar"}
+              {isPending ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
         </form>

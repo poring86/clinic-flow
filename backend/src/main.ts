@@ -16,11 +16,11 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
 
-  // Habilita validação global dos DTOs
+  // Enable global DTO validation.
   const { ValidationPipe } = await import('@nestjs/common');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  // Swagger/OpenAPI setup
+  // Swagger/OpenAPI setup.
   const config = new DocumentBuilder()
     .setTitle('Clic Flow API')
     .setDescription('API documentation for Clic Flow')

@@ -3,16 +3,16 @@ import z from "zod";
 export const upsertPatientSchema = z.object({
   id: z.string().optional(),
   name: z.string().trim().min(1, {
-    message: "Nome é obrigatório.",
+    message: "Name is required.",
   }),
   email: z.string().email({
-    message: "Email inválido.",
+    message: "Invalid email.",
   }),
   phoneNumber: z.string().min(1, {
-    message: "Número de telefone é obrigatório.",
+    message: "Phone number is required.",
   }),
   sex: z.enum(["male", "female"], {
-    errorMap: () => ({ message: "Sexo é obrigatório." }),
+    errorMap: () => ({ message: "Sex is required." }),
   }),
 });
 

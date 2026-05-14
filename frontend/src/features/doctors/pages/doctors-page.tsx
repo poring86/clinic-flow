@@ -33,7 +33,7 @@ export const DoctorsPage = ({ clinicId }: DoctorsPageProps) => {
       const doctorsRes = await fetch(doctorsUrl, { method: "GET" });
 
       if (!doctorsRes.ok) {
-        throw new Error("Failed to fetch doctors");
+        throw new Error("Failed to load doctors");
       }
 
       return (await doctorsRes.json()) as Doctor[];
@@ -49,8 +49,8 @@ export const DoctorsPage = ({ clinicId }: DoctorsPageProps) => {
     <PageContainer>
       <PageHeader>
         <PageHeaderContent>
-          <PageTitle>Médicos</PageTitle>
-          <PageDescription>Gerencie os médicos em sua clínica.</PageDescription>
+          <PageTitle>Doctors</PageTitle>
+          <PageDescription>Manage the doctors in your clinic.</PageDescription>
         </PageHeaderContent>
 
         <PageActions>

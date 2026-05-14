@@ -23,6 +23,7 @@
 /.next
 /out
 /frontend/.next/
+/frontend/.next-local/
 /frontend/.next_root_owned_backup_*/
 /frontend/.github/instructions/
 

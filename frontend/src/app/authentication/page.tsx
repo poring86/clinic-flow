@@ -7,7 +7,7 @@ import { getServerSession } from "@/lib/auth/server-session";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Autenticação | Clic Flow",
+  title: "Authentication | Clic Flow",
 };
 
 const AuthenticationPage = async () => {

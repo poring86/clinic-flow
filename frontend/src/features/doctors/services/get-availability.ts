@@ -1,4 +1,4 @@
-import "dayjs/locale/pt-br";
+import "dayjs/locale/en";
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -6,7 +6,7 @@ import utc from "dayjs/plugin/utc";
 import type { DoctorDto as Doctor } from "@/api/schemas";
 
 dayjs.extend(utc);
-dayjs.locale("pt-br");
+dayjs.locale("en");
 
 const buildUtcDateForWeekDay = (weekDay: number, time: string) => {
   const [hour = "0", minute = "0", second = "0"] = time.split(":");

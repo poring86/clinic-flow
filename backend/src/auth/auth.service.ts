@@ -71,14 +71,14 @@ export class AuthService {
     if (!valid) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    // Cria sessão
+    // Create session.
     const sessionId = uuidv4();
     const token = uuidv4();
     await db.insert(sessionsTable).values({
       id: sessionId,
       userId: user[0].id,
       token,
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 dias
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
       createdAt: new Date(),
       updatedAt: new Date(),
     });

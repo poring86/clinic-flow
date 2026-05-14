@@ -11,7 +11,7 @@ export const patientsTableColumns: ColumnDef<Patient>[] = [
   {
     id: "select",
     accessorKey: "name",
-    header: "Nome",
+    header: "Name",
   },
   {
     id: "email",
@@ -21,7 +21,7 @@ export const patientsTableColumns: ColumnDef<Patient>[] = [
   {
     id: "phoneNumber",
     accessorKey: "phoneNumber",
-    header: "Número do Telefone",
+    header: "Phone Number",
     cell: (params) => {
       const patient = params.row.original;
       return (
@@ -37,10 +37,10 @@ export const patientsTableColumns: ColumnDef<Patient>[] = [
   {
     id: "sex",
     accessorKey: "sex",
-    header: "Sexo",
+    header: "Sex",
     cell: (params) => {
       const patient = params.row.original;
-      return patient.sex === "male" ? "Masculino" : "Feminino";
+      return patient.sex === "male" ? "Male" : "Female";
     },
   },
   {

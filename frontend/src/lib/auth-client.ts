@@ -1,1 +1,1 @@
-// Arquivo removido: better-auth não deve ser usado no frontend. Mantenha este arquivo vazio ou remova se não houver dependências.
+// Removed file: better-auth should not be used in the frontend. Keep this file empty or delete it if there are no dependencies.

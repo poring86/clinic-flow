@@ -47,10 +47,10 @@ export const PatientsTableActions = ({ patient }: { patient: Patient }) => {
       queryClient.invalidateQueries({
         queryKey: getPatientControllerFindAllQueryKey(),
       });
-      toast.success("Paciente deletado com sucesso.");
+      toast.success("Patient deleted successfully.");
     },
     onError: () => {
-      toast.error("Erro ao deletar paciente.");
+      toast.error("Error deleting patient.");
     },
   });
 
@@ -76,29 +76,29 @@ export const PatientsTableActions = ({ patient }: { patient: Patient }) => {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => setUpsertPatientDialogOpen(true)}>
               <Pencil />
-              Editar
+              Edit
             </DropdownMenuItem>
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                   <Trash />
-                  Excluir
+                  Delete
                 </DropdownMenuItem>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>
-                    Tem certeza que deseja deletar esse paciente?
+                    Are you sure you want to delete this patient?
                   </AlertDialogTitle>
                   <AlertDialogDescription>
-                    Essa ação não pode ser revertida. Isso irá deletar o
-                    paciente permanentemente do sistema.
+                    This action cannot be undone. It will delete the patient
+                    permanently from the system.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction onClick={handleDeletePatientClick}>
-                    Deletar
+                    Delete
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

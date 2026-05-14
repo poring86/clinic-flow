@@ -89,9 +89,9 @@ export const AppointmentsPage = ({ clinicId }: AppointmentsPageProps) => {
     <PageContainer>
       <PageHeader>
         <PageHeaderContent>
-          <PageTitle>Agendamentos</PageTitle>
+          <PageTitle>Appointments</PageTitle>
           <PageDescription>
-            Gerencie os agendamentos da sua clínica
+            Manage the appointments in your clinic
           </PageDescription>
         </PageHeaderContent>
       </PageHeader>

@@ -26,8 +26,8 @@ import {
 import { Input } from "@/components/ui/input";
 
 const signInSchema = z.object({
-  email: z.string().trim().email("Informe um email válido"),
-  password: z.string().trim().min(8, "Senha deve ter pelo menos 8 caracteres"),
+  email: z.string().trim().email("Enter a valid email"),
+  password: z.string().trim().min(8, "Password must be at least 8 characters"),
 });
 
 export const SignInForm = () => {
@@ -50,13 +50,13 @@ export const SignInForm = () => {
       });
       if (!res.ok) {
         const error = await res.json().catch(() => ({}));
-        toast.error(error?.message ?? "Credenciais inválidas");
+        toast.error(error?.message ?? "Invalid credentials");
         return;
       }
       router.refresh();
       router.push("/dashboard");
     } catch {
-      toast.error("Erro ao conectar com o servidor");
+      toast.error("Error connecting to the server");
     }
   };
 
@@ -71,10 +71,8 @@ export const SignInForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <CardHeader className="space-y-2">
-            <CardTitle>Entrar</CardTitle>
-            <CardDescription>
-              Realize o seu login para continuar.
-            </CardDescription>
+            <CardTitle>Sign in</CardTitle>
+            <CardDescription>Sign in to continue.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
@@ -96,7 +94,7 @@ export const SignInForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Senha</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input type="password" placeholder="********" {...field} />
                   </FormControl>
@@ -108,7 +106,7 @@ export const SignInForm = () => {
           <CardFooter>
             <div className="w-full space-y-2">
               <Button type="submit" className="w-full">
-                Entrar
+                Sign in
               </Button>
               <Button
                 variant="outline"
@@ -134,7 +132,7 @@ export const SignInForm = () => {
                     fill="#EA4335"
                   />
                 </svg>
-                Entrar com Google
+                Sign in with Google
               </Button>
             </div>
           </CardFooter>

@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { enUS } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -53,19 +53,19 @@ interface AvailableTime {
 
 const formSchema = z.object({
   patientId: z.string().min(1, {
-    message: "Paciente é obrigatório.",
+    message: "Patient is required.",
   }),
   doctorId: z.string().min(1, {
-    message: "Médico é obrigatório.",
+    message: "Doctor is required.",
   }),
   appointmentPrice: z.number().min(1, {
-    message: "Valor da consulta é obrigatório.",
+    message: "Appointment price is required.",
   }),
   date: z.date({
-    message: "Data é obrigatória.",
+    message: "Date is required.",
   }),
   time: z.string().min(1, {
-    message: "Horário é obrigatório.",
+    message: "Time is required.",
   }),
 });
 
@@ -180,9 +180,9 @@ const AddAppointmentForm = ({
   return (
     <DialogContent className="sm:max-w-[500px]">
       <DialogHeader>
-        <DialogTitle>Novo agendamento</DialogTitle>
+        <DialogTitle>New appointment</DialogTitle>
         <DialogDescription>
-          Crie um novo agendamento para sua clínica.
+          Create a new appointment for your clinic.
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>
@@ -192,14 +192,14 @@ const AddAppointmentForm = ({
             name="patientId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Paciente</FormLabel>
+                <FormLabel>Patient</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um paciente" />
+                      <SelectValue placeholder="Select a patient" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -220,14 +220,14 @@ const AddAppointmentForm = ({
             name="doctorId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Médico</FormLabel>
+                <FormLabel>Doctor</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um médico" />
+                      <SelectValue placeholder="Select a doctor" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -248,7 +248,7 @@ const AddAppointmentForm = ({
             name="appointmentPrice"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Valor da consulta</FormLabel>
+                <FormLabel>Appointment price</FormLabel>
                 <NumericFormat
                   value={field.value}
                   onValueChange={(value) => {
@@ -273,7 +273,7 @@ const AddAppointmentForm = ({
             name="date"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Data</FormLabel>
+                <FormLabel>Date</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -287,9 +287,9 @@ const AddAppointmentForm = ({
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {field.value ? (
-                          format(field.value, "PPP", { locale: ptBR })
+                          format(field.value, "PPP", { locale: enUS })
                         ) : (
-                          <span>Selecione uma data</span>
+                          <span>Select a date</span>
                         )}
                       </Button>
                     </FormControl>
@@ -316,7 +316,7 @@ const AddAppointmentForm = ({
             name="time"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Horário</FormLabel>
+                <FormLabel>Time</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -324,7 +324,7 @@ const AddAppointmentForm = ({
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um horário" />
+                      <SelectValue placeholder="Select a time" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -334,7 +334,7 @@ const AddAppointmentForm = ({
                         value={time.value}
                         disabled={!time.available}
                       >
-                        {time.label} {!time.available && "(Indisponível)"}
+                        {time.label} {!time.available && "(Unavailable)"}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -347,8 +347,8 @@ const AddAppointmentForm = ({
           <DialogFooter>
             <Button type="submit" disabled={createAppointmentViewModel.isPending}>
               {createAppointmentViewModel.isPending
-                ? "Criando..."
-                : "Criar agendamento"}
+                ? "Creating..."
+                : "Create appointment"}
             </Button>
           </DialogFooter>
         </form>

@@ -43,21 +43,21 @@ import { medicalSpecialties } from "../constants";
 const formSchema = z
   .object({
     name: z.string().trim().min(1, {
-      message: "Nome é obrigatório.",
+      message: "Name is required.",
     }),
     specialty: z.string().trim().min(1, {
-      message: "Especialidade é obrigatória.",
+      message: "Specialty is required.",
     }),
     appointmentPrice: z.number().min(1, {
-      message: "Preço da consulta é obrigatório.",
+      message: "Appointment price is required.",
     }),
     availableFromWeekDay: z.string(),
     availableToWeekDay: z.string(),
     availableFromTime: z.string().min(1, {
-      message: "Hora de início é obrigatória.",
+      message: "Start time is required.",
     }),
     availableToTime: z.string().min(1, {
-      message: "Hora de término é obrigatória.",
+      message: "End time is required.",
     }),
   })
   .refine(
@@ -66,7 +66,7 @@ const formSchema = z
     },
     {
       message:
-        "O horário de início não pode ser anterior ao horário de término.",
+        "Start time cannot be earlier than end time.",
       path: ["availableToTime"],
     },
   );
@@ -171,17 +171,17 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
     };
 
     if (!body.clinicId) {
-      toast.error("Nenhuma clínica associada à sessão atual.");
+      toast.error("No clinic is associated with the current session.");
       return;
     }
 
     try {
       if (doctor?.id) {
         await updateMutation.mutateAsync(body);
-        toast.success("Médico atualizado com sucesso.");
+        toast.success("Doctor updated successfully.");
       } else {
         await createMutation.mutateAsync(body);
-        toast.success("Médico adicionado com sucesso.");
+        toast.success("Doctor added successfully.");
       }
 
       onSuccess?.();
@@ -191,8 +191,8 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
         error instanceof Error
           ? error.message
           : doctor?.id
-            ? "Erro ao atualizar médico."
-            : "Erro ao adicionar médico.",
+            ? "Error updating doctor."
+            : "Error adding doctor.",
       );
     }
   };
@@ -202,11 +202,11 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>{doctor ? doctor.name : "Adicionar médico"}</DialogTitle>
+        <DialogTitle>{doctor ? doctor.name : "Add doctor"}</DialogTitle>
         <DialogDescription>
           {doctor
-            ? "Edite as informações desse médico."
-            : "Adicione um novo médico."}
+            ? "Edit this doctor's information."
+            : "Add a new doctor."}
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>
@@ -216,9 +216,9 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Nome</FormLabel>
+                <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Digite o nome do médico" />
+                  <Input {...field} placeholder="Enter the doctor's name" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -229,14 +229,14 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
             name="specialty"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Especialidade</FormLabel>
+                <FormLabel>Specialty</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione uma especialidade" />
+                      <SelectValue placeholder="Select a specialty" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -256,13 +256,13 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
             name="appointmentPrice"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Preço da consulta</FormLabel>
+                <FormLabel>Appointment price</FormLabel>
                 <NumericFormat
                   value={field.value || ""}
                   onValueChange={(value) => {
                     field.onChange(value.floatValue || 0);
                   }}
-                  placeholder="R$200,00"
+                  placeholder="$200.00"
                   decimalScale={2}
                   fixedDecimalScale
                   decimalSeparator=","
@@ -281,24 +281,24 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
             name="availableFromWeekDay"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Dia inicial de disponibilidade</FormLabel>
+                <FormLabel>Available from weekday</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um dia" />
+                      <SelectValue placeholder="Select a weekday" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="0">Domingo</SelectItem>
-                    <SelectItem value="1">Segunda</SelectItem>
-                    <SelectItem value="2">Terça</SelectItem>
-                    <SelectItem value="3">Quarta</SelectItem>
-                    <SelectItem value="4">Quinta</SelectItem>
-                    <SelectItem value="5">Sexta</SelectItem>
-                    <SelectItem value="6">Sábado</SelectItem>
+                    <SelectItem value="0">Sunday</SelectItem>
+                    <SelectItem value="1">Monday</SelectItem>
+                    <SelectItem value="2">Tuesday</SelectItem>
+                    <SelectItem value="3">Wednesday</SelectItem>
+                    <SelectItem value="4">Thursday</SelectItem>
+                    <SelectItem value="5">Friday</SelectItem>
+                    <SelectItem value="6">Saturday</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -310,24 +310,24 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
             name="availableToWeekDay"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Dia final de disponibilidade</FormLabel>
+                <FormLabel>Available to weekday</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um dia" />
+                      <SelectValue placeholder="Select a weekday" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="0">Domingo</SelectItem>
-                    <SelectItem value="1">Segunda</SelectItem>
-                    <SelectItem value="2">Terça</SelectItem>
-                    <SelectItem value="3">Quarta</SelectItem>
-                    <SelectItem value="4">Quinta</SelectItem>
-                    <SelectItem value="5">Sexta</SelectItem>
-                    <SelectItem value="6">Sábado</SelectItem>
+                    <SelectItem value="0">Sunday</SelectItem>
+                    <SelectItem value="1">Monday</SelectItem>
+                    <SelectItem value="2">Tuesday</SelectItem>
+                    <SelectItem value="3">Wednesday</SelectItem>
+                    <SelectItem value="4">Thursday</SelectItem>
+                    <SelectItem value="5">Friday</SelectItem>
+                    <SelectItem value="6">Saturday</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -339,19 +339,19 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
             name="availableFromTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Horário inicial de disponibilidade</FormLabel>
+                <FormLabel>Available from time</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um horário" />
+                      <SelectValue placeholder="Select a time" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Manhã</SelectLabel>
+                      <SelectLabel>Morning</SelectLabel>
                       <SelectItem value="05:00:00">05:00</SelectItem>
                       <SelectItem value="05:30:00">05:30</SelectItem>
                       <SelectItem value="06:00:00">06:00</SelectItem>
@@ -370,7 +370,7 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
                       <SelectItem value="12:30:00">12:30</SelectItem>
                     </SelectGroup>
                     <SelectGroup>
-                      <SelectLabel>Tarde</SelectLabel>
+                      <SelectLabel>Afternoon</SelectLabel>
                       <SelectItem value="13:00:00">13:00</SelectItem>
                       <SelectItem value="13:30:00">13:30</SelectItem>
                       <SelectItem value="14:00:00">14:00</SelectItem>
@@ -385,7 +385,7 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
                       <SelectItem value="18:30:00">18:30</SelectItem>
                     </SelectGroup>
                     <SelectGroup>
-                      <SelectLabel>Noite</SelectLabel>
+                      <SelectLabel>Evening</SelectLabel>
                       <SelectItem value="19:00:00">19:00</SelectItem>
                       <SelectItem value="19:30:00">19:30</SelectItem>
                       <SelectItem value="20:00:00">20:00</SelectItem>
@@ -408,19 +408,19 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
             name="availableToTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Horário final de disponibilidade</FormLabel>
+                <FormLabel>Available to time</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Selecione um horário" />
+                      <SelectValue placeholder="Select a time" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Manhã</SelectLabel>
+                      <SelectLabel>Morning</SelectLabel>
                       <SelectItem value="05:00:00">05:00</SelectItem>
                       <SelectItem value="05:30:00">05:30</SelectItem>
                       <SelectItem value="06:00:00">06:00</SelectItem>
@@ -439,7 +439,7 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
                       <SelectItem value="12:30:00">12:30</SelectItem>
                     </SelectGroup>
                     <SelectGroup>
-                      <SelectLabel>Tarde</SelectLabel>
+                      <SelectLabel>Afternoon</SelectLabel>
                       <SelectItem value="13:00:00">13:00</SelectItem>
                       <SelectItem value="13:30:00">13:30</SelectItem>
                       <SelectItem value="14:00:00">14:00</SelectItem>
@@ -454,7 +454,7 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
                       <SelectItem value="18:30:00">18:30</SelectItem>
                     </SelectGroup>
                     <SelectGroup>
-                      <SelectLabel>Noite</SelectLabel>
+                      <SelectLabel>Evening</SelectLabel>
                       <SelectItem value="19:00:00">19:00</SelectItem>
                       <SelectItem value="19:30:00">19:30</SelectItem>
                       <SelectItem value="20:00:00">20:00</SelectItem>
@@ -475,10 +475,10 @@ const UpsertDoctorForm = ({ doctor, clinicId, onSuccess }: UpsertDoctorFormProps
           <DialogFooter>
             <Button type="submit" disabled={isPending}>
               {isPending
-                ? "Salvando..."
+                ? "Saving..."
                 : doctor
-                  ? "Salvar"
-                  : "Adicionar"}
+                  ? "Save"
+                  : "Add"}
             </Button>
           </DialogFooter>
         </form>

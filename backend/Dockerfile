@@ -23,5 +23,6 @@ ENV NODE_ENV=production
 COPY package*.json ./
 COPY --from=production-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist-build ./dist-build
+COPY scripts ./scripts
 EXPOSE 3333
-CMD ["npm", "run", "start:prod"]
+CMD ["sh", "-c", "node scripts/init-db.js && npm run db:seed && npm run start:prod"]

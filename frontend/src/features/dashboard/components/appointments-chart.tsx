@@ -1,10 +1,6 @@
 "use client";
 
-import "dayjs/locale/pt-br";
-
 import dayjs from "dayjs";
-
-dayjs.locale("pt-br");
 import { CalendarDays, DollarSign, HandCoins } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 

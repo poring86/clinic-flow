@@ -58,8 +58,7 @@ const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
         <PageHeaderContent>
           <PageTitle>Dashboard</PageTitle>
           <PageDescription>
-            Acesse uma visão geral detalhada das principais métricas e
-            resultados dos pacientes
+            Access a detailed overview of the main metrics and patient results
           </PageDescription>
         </PageHeaderContent>
 

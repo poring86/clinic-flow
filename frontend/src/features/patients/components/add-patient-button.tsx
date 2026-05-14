@@ -20,7 +20,7 @@ export const AddPatientButton = ({ clinicId }: AddPatientButtonProps) => {
     <>
       <Button type="button" onClick={() => setIsUpsertPatientDialogOpen(true)}>
         <Plus />
-        Adicionar Paciente
+        Add Patient
       </Button>
 
       <Dialog

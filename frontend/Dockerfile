@@ -12,6 +12,8 @@ EXPOSE 3000
 CMD ["npm", "run", "dev"]
 
 FROM deps AS build
+ARG NEXT_PUBLIC_API_URL=http://localhost:3333
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 COPY . .
 RUN npm run build
 

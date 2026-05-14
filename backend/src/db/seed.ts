@@ -78,7 +78,7 @@ async function main() {
   const doctorData = [
     {
       name: 'Dr. Carlos Mendes',
-      specialty: 'Cardiologia',
+      specialty: 'Cardiology',
       availableFromWeekDay: 1, // Monday
       availableToWeekDay: 5, // Friday
       availableFromTime: '08:00:00',
@@ -87,7 +87,7 @@ async function main() {
     },
     {
       name: 'Dra. Fernanda Lima',
-      specialty: 'Dermatologia',
+      specialty: 'Dermatology',
       availableFromWeekDay: 1,
       availableToWeekDay: 4, // Thursday
       availableFromTime: '09:00:00',
@@ -96,7 +96,7 @@ async function main() {
     },
     {
       name: 'Dr. Rafael Torres',
-      specialty: 'Ortopedia',
+      specialty: 'Orthopedics and Traumatology',
       availableFromWeekDay: 2, // Tuesday
       availableToWeekDay: 6, // Saturday
       availableFromTime: '07:00:00',
@@ -104,8 +104,8 @@ async function main() {
       appointmentPriceInCents: 30000, // R$ 300,00
     },
     {
-      name: 'Dra. Juliana Costa',
-      specialty: 'Pediatria',
+      name: 'Dr. Juliana Costa',
+      specialty: 'Pediatrics',
       availableFromWeekDay: 1,
       availableToWeekDay: 5,
       availableFromTime: '08:00:00',
@@ -113,8 +113,8 @@ async function main() {
       appointmentPriceInCents: 18000, // R$ 180,00
     },
     {
-      name: 'Dr. André Batista',
-      specialty: 'Neurologia',
+      name: 'Dr. Andre Batista',
+      specialty: 'Neurology',
       availableFromWeekDay: 1,
       availableToWeekDay: 5,
       availableFromTime: '10:00:00',

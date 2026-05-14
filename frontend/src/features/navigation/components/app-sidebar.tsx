@@ -124,7 +124,7 @@ export const AppSidebar = ({ userName, userEmail, hasClinic }: AppSidebarProps) 
 
         <SidebarGroup className="mt-8">
           <SidebarGroupLabel className={`mb-2 pl-3 text-left text-[10px] uppercase tracking-[0.34em] text-white/55 transition-[opacity] duration-300 ease-linear ${collapsed ? "opacity-0" : "opacity-100"}`}>
-            Outros
+            Other
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>

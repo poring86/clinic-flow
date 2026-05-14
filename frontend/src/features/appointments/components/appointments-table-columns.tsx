@@ -1,15 +1,11 @@
 "use client";
 
-import "dayjs/locale/pt-br";
-
 import { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
 
 import { AppointmentsTableActions } from "./appointments-table-actions";
 
-dayjs.locale("pt-br");
-
-// Defina o tipo explicitamente, compatível com o retorno da API/backend
+// Explicit type, compatible with backend/API return payload.
 type AppointmentWithRelations = {
   id: string;
   clinicId: string;
@@ -21,38 +17,38 @@ type AppointmentWithRelations = {
     name: string;
     specialty: string;
   };
-  // Adicione outros campos necessários conforme o retorno da API
+  // Add other required fields according to API response.
 };
 
 export const appointmentsTableColumns: ColumnDef<AppointmentWithRelations>[] = [
   {
     id: "patient",
     accessorKey: "patient.name",
-    header: "Paciente",
+    header: "Patient",
   },
   {
     id: "doctor",
     accessorKey: "doctor.name",
-    header: "Médico",
+    header: "Doctor",
   },
   {
     id: "specialty",
     accessorKey: "doctor.specialty",
-    header: "Especialidade",
+    header: "Specialty",
   },
   {
     id: "date",
     accessorKey: "date",
-    header: "Data",
+    header: "Date",
     cell: (params) => {
       const appointment = params.row.original;
-      return dayjs(appointment.date).format("DD [de] MMMM [de] YYYY");
+      return dayjs(appointment.date).format("MMMM DD, YYYY");
     },
   },
   {
     id: "time",
     accessorKey: "date",
-    header: "Horário",
+    header: "Time",
     cell: (params) => {
       const appointment = params.row.original;
       return dayjs(appointment.date).format("HH:mm");

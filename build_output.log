@@ -1,0 +1,67 @@
+ Service frontend  Building
+#0 building with "default" instance using docker driver
+
+#1 [frontend internal] load build definition from Dockerfile
+#1 transferring dockerfile: 634B 0.0s done
+#1 DONE 0.0s
+
+#2 [frontend internal] load metadata for docker.io/library/node:22-alpine
+#2 DONE 0.8s
+
+#3 [frontend internal] load .dockerignore
+#3 transferring context: 112B done
+#3 DONE 0.0s
+
+#4 [frontend internal] load build context
+#4 DONE 0.0s
+
+#5 [frontend base 1/3] FROM docker.io/library/node:22-alpine@sha256:8ea2348b068a9544dae7317b4f3aafcdc032df1647bb7d768a05a5cad1a7683f
+#5 resolve docker.io/library/node:22-alpine@sha256:8ea2348b068a9544dae7317b4f3aafcdc032df1647bb7d768a05a5cad1a7683f 0.1s done
+#5 DONE 0.1s
+
+#4 [frontend internal] load build context
+#4 transferring context: 17.86kB 0.1s done
+#4 DONE 0.2s
+
+#6 [frontend deps 1/2] COPY package*.json ./
+#6 CACHED
+
+#7 [frontend production 1/3] COPY --from=build /app/public ./public
+#7 CACHED
+
+#8 [frontend base 2/3] RUN apk add --no-cache libc6-compat
+#8 CACHED
+
+#9 [frontend base 3/3] WORKDIR /app
+#9 CACHED
+
+#10 [frontend build 1/2] COPY . .
+#10 CACHED
+
+#11 [frontend deps 2/2] RUN npm ci --legacy-peer-deps
+#11 CACHED
+
+#12 [frontend build 2/2] RUN npm run build
+#12 CACHED
+
+#13 [frontend production 2/3] COPY --from=build /app/.next/standalone ./
+#13 CACHED
+
+#14 [frontend production 3/3] COPY --from=build /app/.next/static ./.next/static
+#14 CACHED
+
+#15 [frontend] exporting to image
+#15 exporting layers 0.0s done
+#15 exporting manifest sha256:3ae9ec05f5d977ccfd070cdc4441e28411261d5c55ee6c7c528628f34d392816 done
+#15 exporting config sha256:131bed0935a6bec676eedfb74d2327fd4188292fd2dfd69261094da1f5f0b5b0 done
+#15 exporting attestation manifest sha256:36138786e5f529edebc43a9b2929e0b8ee2ae7ec09869c73c8d91a550deea021
+#15 exporting attestation manifest sha256:36138786e5f529edebc43a9b2929e0b8ee2ae7ec09869c73c8d91a550deea021 0.1s done
+#15 exporting manifest list sha256:bf40b31e887a7604e6487e416148d5931888ab14ac49f2b18b802af58ab846cb
+#15 exporting manifest list sha256:bf40b31e887a7604e6487e416148d5931888ab14ac49f2b18b802af58ab846cb 0.0s done
+#15 naming to docker.io/library/doutor-agenda-prod-frontend:latest done
+#15 unpacking to docker.io/library/doutor-agenda-prod-frontend:latest 0.0s done
+#15 DONE 0.4s
+
+#16 [frontend] resolving provenance for metadata file
+ Service frontend  Built
+#16 DONE 0.0s

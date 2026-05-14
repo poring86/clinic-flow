@@ -22,10 +22,8 @@ export const PatientsPage = ({ clinicId }: PatientsPageProps) => {
     <PageContainer>
       <PageHeader>
         <PageHeaderContent>
-          <PageTitle>Pacientes</PageTitle>
-          <PageDescription>
-            Gerencie os pacientes da sua clínica.
-          </PageDescription>
+          <PageTitle>Patients</PageTitle>
+          <PageDescription>Manage the patients in your clinic.</PageDescription>
         </PageHeaderContent>
 
         <PageActions>

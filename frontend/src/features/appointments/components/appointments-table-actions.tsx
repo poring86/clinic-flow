@@ -53,10 +53,10 @@ export const AppointmentsTableActions = ({
       queryClient.invalidateQueries({
         queryKey: appointmentsQueryKeys.list(appointment.clinicId),
       });
-      toast.success("Agendamento deletado com sucesso.");
+      toast.success("Appointment deleted successfully.");
     },
     onError: () => {
-      toast.error("Erro ao deletar agendamento.");
+      toast.error("Error deleting appointment.");
     },
   });
 
@@ -81,23 +81,23 @@ export const AppointmentsTableActions = ({
           <AlertDialogTrigger asChild>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
               <Trash />
-              Excluir
+              Delete
             </DropdownMenuItem>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>
-                Tem certeza que deseja deletar esse agendamento?
+                Are you sure you want to delete this appointment?
               </AlertDialogTitle>
               <AlertDialogDescription>
-                Essa ação não pode ser revertida. Isso irá deletar o agendamento
-                permanentemente do sistema.
+                This action cannot be undone. It will permanently delete the
+                appointment from the system.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction onClick={handleDeleteAppointmentClick}>
-                Deletar
+                Delete
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

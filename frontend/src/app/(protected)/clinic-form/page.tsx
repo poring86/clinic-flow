@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import { ClinicFormPage } from "@/features/clinic";
 
 export const metadata: Metadata = {
-  title: "Criar clínica | Clic Flow",
-  description: "Página para criar uma nova clínica no Clic Flow.",
+  title: "Create Clinic | Clic Flow",
+  description: "Page to create a new clinic in Clic Flow.",
 };
 
 const ClinicFormRoute = () => {

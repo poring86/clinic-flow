@@ -45,7 +45,7 @@ Clic Flow is a SaaS platform designed for medical clinics. It allows clinic owne
 │                                                          │
 │  ┌──────────────┐  ┌───────────────┐  ┌──────────────┐  │
 │  │  /auth/*     │  │  /dashboard   │  │  /doctors    │  │
-│  │  Login/Reg   │  │  Stats/Charts │  │  CRUD        │  │
+│  │  Login/Register│ │  Stats/Charts │  │  CRUD        │  │
 │  └──────────────┘  └───────────────┘  └──────────────┘  │
 │  ┌──────────────┐  ┌───────────────┐  ┌──────────────┐  │
 │  │  /patients   │  │ /appointments │  │ /subscription│  │

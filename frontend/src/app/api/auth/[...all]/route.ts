@@ -1,4 +1,3 @@
 
-
-// Este endpoint foi desativado. Não há lógica de autenticação aqui.
+// This endpoint has been disabled. There is no authentication logic here.
 export {};

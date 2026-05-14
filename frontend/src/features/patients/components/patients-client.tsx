@@ -37,7 +37,7 @@ export const PatientsClient = ({ clinicId }: PatientsClientProps) => {
   });
 
   if (isLoading) {
-    return <div className="text-center py-10">Carregando pacientes...</div>;
+    return <div className="text-center py-10">Loading patients...</div>;
   }
 
   return <DataTable data={patients} columns={patientsTableColumns} />;

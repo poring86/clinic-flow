@@ -8,12 +8,12 @@ export const deleteAppointment = async (id: string) => {
     headers: {
       "Content-Type": "application/json",
     },
-    // Se precisar de autenticação, adicione aqui
+    // Add authentication here if needed.
   });
   if (!res.ok) {
     throw new Error("Failed to delete appointment");
   }
-  // Opcional: revalidatePath ou outras ações de cache
+  // Optional: revalidatePath or other cache actions.
   // revalidatePath('/appointments');
   return await res.json();
 };

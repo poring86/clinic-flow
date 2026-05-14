@@ -1,6 +1,6 @@
 "use server";
 
-// TODO: Implementar deleção de médico quando endpoint estiver disponível na API gerada
+// TODO: Implement doctor deletion when the endpoint is available in the generated API.
 export const deleteDoctorAction = async () => {
-  throw new Error("doctorControllerDelete não está disponível na API gerada. Implemente o endpoint no backend e gere novamente o client.");
+  throw new Error("doctorControllerDelete is not available in the generated API. Implement the endpoint in the backend and regenerate the client.");
 };
