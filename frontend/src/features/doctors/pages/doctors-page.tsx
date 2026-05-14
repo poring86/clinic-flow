@@ -2,7 +2,6 @@
 
 import { Loader2 } from "lucide-react";
 
-import { Pagination } from "@/components/ui/pagination";
 import {
   PageActions,
   PageContainer,
@@ -12,6 +11,7 @@ import {
   PageHeaderContent,
   PageTitle,
 } from "@/components/ui/page-container";
+import { Pagination } from "@/components/ui/pagination";
 
 import { AddDoctorButton } from "../components/add-doctor-button";
 import { DoctorCard } from "../components/doctor-card";

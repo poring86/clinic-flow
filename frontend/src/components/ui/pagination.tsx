@@ -19,8 +19,8 @@ interface PaginationProps {
   pageSize: number;
   total: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
-  onPageSizeChange: (pageSize: number) => void;
+  onPageChange: (_page: number) => void;
+  onPageSizeChange: (_pageSize: number) => void;
 }
 
 export const Pagination = ({
@@ -97,7 +97,7 @@ export const Pagination = ({
         </div>
 
         <div className="flex items-center justify-center gap-2 overflow-x-auto pb-1">
-          {pageItems.map((item, index) => {
+          {pageItems.map((item) => {
             return (
               <Button
                 key={item}

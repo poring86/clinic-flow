@@ -1,7 +1,6 @@
 "use client";
 
 import { DataTable } from "@/components/ui/data-table";
-import { Pagination } from "@/components/ui/pagination";
 import {
   PageContainer,
   PageContent,
@@ -10,6 +9,7 @@ import {
   PageHeaderContent,
   PageTitle,
 } from "@/components/ui/page-container";
+import { Pagination } from "@/components/ui/pagination";
 
 import { AddAppointmentButton } from "../components/add-appointment-button";
 import { appointmentsTableColumns } from "../components/appointments-table-columns";
