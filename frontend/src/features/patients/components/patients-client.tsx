@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 import type { PatientDto as Patient } from "@/api/schemas";
-import { DataTable } from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
 import { getApiBaseUrl } from "@/lib/api-base-url";
 
 import { patientsQueryKeys } from "../query-keys";

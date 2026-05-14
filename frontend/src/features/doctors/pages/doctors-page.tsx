@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 import type { DoctorDto as Doctor } from "@/api/schemas";
 import { Button } from "@/components/ui/button";

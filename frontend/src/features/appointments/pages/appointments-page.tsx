@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
 import type {
   AppointmentDto as Appointment,
   DoctorDto as Doctor,
   PatientDto as Patient,
 } from "@/api/schemas";
-import { DataTable } from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
 import {
   PageContainer,
   PageContent,

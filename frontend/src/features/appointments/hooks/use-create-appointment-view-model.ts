@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import type { CreateAppointmentFormValues } from "../contracts/create-appointment-form-values";
-import { appointmentsQueryKeys } from "../query-keys";
 import { createAppointmentService } from "../services/create-appointment-service";
 
 interface UseCreateAppointmentViewModelParams {
