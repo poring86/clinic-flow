@@ -65,11 +65,12 @@ export const AppointmentsPage = ({ clinicId }: AppointmentsPageProps) => {
     enabled: !!clinicId,
     queryFn: async () => {
       const res = await fetch(
-        `${baseUrl}/doctor?clinicId=${encodeURIComponent(clinicId)}`,
+        `${baseUrl}/doctor?clinicId=${encodeURIComponent(clinicId)}&page=1&pageSize=500`,
         { method: "GET" },
       );
       if (!res.ok) throw new Error("Failed to fetch doctors");
-      return (await res.json()) as Doctor[];
+      const json = await res.json();
+      return (json.data ?? json) as Doctor[];
     },
   });
 
@@ -78,11 +79,12 @@ export const AppointmentsPage = ({ clinicId }: AppointmentsPageProps) => {
     enabled: !!clinicId,
     queryFn: async () => {
       const res = await fetch(
-        `${baseUrl}/patient?clinicId=${encodeURIComponent(clinicId)}`,
+        `${baseUrl}/patient?clinicId=${encodeURIComponent(clinicId)}&page=1&pageSize=500`,
         { method: "GET" },
       );
       if (!res.ok) throw new Error("Failed to fetch patients");
-      return (await res.json()) as Patient[];
+      const json = await res.json();
+      return (json.data ?? json) as Patient[];
     },
   });
 
