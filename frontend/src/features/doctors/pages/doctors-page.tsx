@@ -1,11 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
-import type { DoctorDto as Doctor } from "@/api/schemas";
-import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/ui/pagination";
 import {
   PageActions,
   PageContainer,
@@ -15,56 +12,26 @@ import {
   PageHeaderContent,
   PageTitle,
 } from "@/components/ui/page-container";
-import { getApiBaseUrl } from "@/lib/api-base-url";
 
 import { AddDoctorButton } from "../components/add-doctor-button";
 import { DoctorCard } from "../components/doctor-card";
-import { doctorsQueryKeys } from "../query-keys";
+import { useDoctorsViewModel } from "../hooks/use-doctors-view-model";
 
 interface DoctorsPageProps {
   clinicId: string;
 }
 
-const PAGE_SIZE = 10;
-
-interface PaginatedDoctorResponse {
-  data: Doctor[];
-  total: number;
-  page: number;
-  pageSize: number;
-  totalPages: number;
-}
-
 export const DoctorsPage = ({ clinicId }: DoctorsPageProps) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const baseUrl = getApiBaseUrl();
-
-  const { data: paginatedData } = useQuery({
-    queryKey: doctorsQueryKeys.listByClinic(clinicId, currentPage),
-    enabled: !!clinicId,
-    queryFn: async () => {
-      const doctorsUrl = `${baseUrl}/doctor?clinicId=${encodeURIComponent(clinicId)}&page=${currentPage}&pageSize=${PAGE_SIZE}`;
-      const doctorsRes = await fetch(doctorsUrl, { method: "GET" });
-
-      if (!doctorsRes.ok) {
-        throw new Error("Failed to load doctors");
-      }
-
-      return (await doctorsRes.json()) as PaginatedDoctorResponse;
-    },
-  });
-
-  const doctorsList = paginatedData?.data ?? [];
-  const totalPages = paginatedData?.totalPages ?? 0;
-  const total = paginatedData?.total ?? 0;
-
-  const handlePreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  };
+  const {
+    doctors,
+    total,
+    totalPages,
+    page,
+    pageSize,
+    isLoading,
+    onPageChange,
+    onPageSizeChange,
+  } = useDoctorsViewModel({ clinicId });
 
   return (
     <PageContainer>
@@ -79,43 +46,36 @@ export const DoctorsPage = ({ clinicId }: DoctorsPageProps) => {
         </PageActions>
       </PageHeader>
       <PageContent>
-        <div className="grid grid-cols-3 gap-6">
-          {doctorsList.map((doctor, index) => (
-            <DoctorCard
-              key={doctor.id?.trim() || `${doctor.name}-${doctor.specialty}-${index}`}
-              doctor={doctor}
-            />
-          ))}
-        </div>
-
-        {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-8 pt-4 border-t">
-            <div className="text-sm text-muted-foreground">
-              Total: <strong>{total}</strong> doctors | Page{" "}
-              <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handlePreviousPage}
-                disabled={currentPage === 1}
-              >
-                <ChevronLeft className="h-4 w-4 mr-1" />
-                Previous
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-              >
-                Next
-                <ChevronRight className="h-4 w-4 ml-1" />
-              </Button>
+        {isLoading ? (
+          <div className="flex min-h-[240px] items-center justify-center rounded-md border border-dashed border-border/70 bg-background/40">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Loading doctors...
             </div>
           </div>
+        ) : doctors.length === 0 ? (
+          <div className="flex items-center justify-center rounded-md border border-dashed border-border/70 bg-background/40 py-10 text-sm text-muted-foreground">
+            No results found.
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-6">
+            {doctors.map((doctor, index) => (
+              <DoctorCard
+                key={doctor.id?.trim() || `${doctor.name}-${doctor.specialty}-${index}`}
+                doctor={doctor}
+              />
+            ))}
+          </div>
         )}
+
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          total={total}
+          totalPages={totalPages}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
       </PageContent>
     </PageContainer>
   );
