@@ -19,13 +19,15 @@ interface PaginationProps {
   pageSize: number;
   total: number;
   totalPages: number;
-  onPageChange: (_page: number) => void;
-  onPageSizeChange: (_pageSize: number) => void;
+  // eslint-disable-next-line no-unused-vars
+  onPageChange: (page: number) => void;
+  // eslint-disable-next-line no-unused-vars
+  onPageSizeChange: (pageSize: number) => void;
 }
 
 export const Pagination = ({
-  page,
-  pageSize,
+  page: currentPage,
+  pageSize: currentPageSize,
   total,
   totalPages,
   onPageChange,
@@ -37,8 +39,8 @@ export const Pagination = ({
     }
 
     const halfWindow = Math.floor(VISIBLE_PAGE_COUNT / 2);
-    let start = page - halfWindow;
-    let end = page + halfWindow;
+    let start = currentPage - halfWindow;
+    let end = currentPage + halfWindow;
 
     if (VISIBLE_PAGE_COUNT % 2 === 0) {
       end -= 1;
@@ -66,8 +68,8 @@ export const Pagination = ({
           <p className="text-sm text-muted-foreground">
             Showing{" "}
             <strong>
-              {total === 0 ? 0 : Math.min((page - 1) * pageSize + 1, total)}–
-              {Math.min(page * pageSize, total)}
+              {total === 0 ? 0 : Math.min((currentPage - 1) * currentPageSize + 1, total)}–
+              {Math.min(currentPage * currentPageSize, total)}
             </strong>{" "}
             of <strong>{total}</strong>
           </p>
@@ -76,7 +78,7 @@ export const Pagination = ({
               Rows per page
             </span>
             <Select
-              value={String(pageSize)}
+              value={String(currentPageSize)}
               onValueChange={(val) => {
                 onPageSizeChange(Number(val));
                 onPageChange(1);
@@ -101,7 +103,7 @@ export const Pagination = ({
             return (
               <Button
                 key={item}
-                variant={item === page ? "secondary" : "outline"}
+                variant={item === currentPage ? "secondary" : "outline"}
                 size="sm"
                 className="min-w-9 px-3"
                 onClick={() => onPageChange(item)}
@@ -115,30 +117,30 @@ export const Pagination = ({
 
         <div className="flex items-center justify-between gap-2 xl:justify-end">
           <p className="text-sm text-muted-foreground">
-            Page <strong>{page}</strong> of <strong>{totalPages}</strong>
+            Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
           </p>
           <div className="flex items-center gap-1">
             <Button
               variant="outline"
               size="sm"
               onClick={() => onPageChange(1)}
-              disabled={page === 1 || totalPages === 0}
+              disabled={currentPage === 1 || totalPages === 0}
             >
               «
             </Button>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onPageChange(page - 1)}
-              disabled={page === 1 || totalPages === 0}
+              onClick={() => onPageChange(currentPage - 1)}
+              disabled={currentPage === 1 || totalPages === 0}
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onPageChange(page + 1)}
-              disabled={page === totalPages || totalPages === 0}
+              onClick={() => onPageChange(currentPage + 1)}
+              disabled={currentPage === totalPages || totalPages === 0}
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -146,7 +148,7 @@ export const Pagination = ({
               variant="outline"
               size="sm"
               onClick={() => onPageChange(totalPages)}
-              disabled={page === totalPages || totalPages === 0}
+              disabled={currentPage === totalPages || totalPages === 0}
             >
               »
             </Button>
