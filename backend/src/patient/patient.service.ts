@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, count } from 'drizzle-orm';
 
 import { db } from '../db';
 import { patientsTable } from '../db/schema';
 import { PatientDto } from './dto/patient.dto';
+import { PaginatedPatientDto } from './dto/paginated-patient.dto';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 
@@ -16,15 +17,33 @@ export class PatientService {
     return (result.rowCount ?? 0) > 0;
   }
 
-  async findAll(clinicId?: string): Promise<PatientDto[]> {
-    const rows = clinicId
-      ? await db
-          .select()
-          .from(patientsTable)
-          .where(eq(patientsTable.clinicId, clinicId))
-      : await db.select().from(patientsTable);
+  async findAll(
+    clinicId?: string,
+    page: number = 1,
+    pageSize: number = 10,
+  ): Promise<PaginatedPatientDto> {
+    const offset = (page - 1) * pageSize;
 
-    return rows.map((row) => ({
+    // Get total count
+    let countQuery: any = db.select({ count: count() }).from(patientsTable);
+    if (clinicId) {
+      countQuery = countQuery.where(eq(patientsTable.clinicId, clinicId));
+    }
+    const countResult = await countQuery;
+    const total = countResult[0]?.count ?? 0;
+    const totalPages = Math.ceil(total / pageSize);
+
+    // Get paginated data
+    let query: any = db.select().from(patientsTable);
+    if (clinicId) {
+      query = query.where(eq(patientsTable.clinicId, clinicId));
+    }
+    const rows = await query
+      .orderBy(patientsTable.updatedAt)
+      .limit(pageSize)
+      .offset(offset);
+
+    const data = rows.map((row: any) => ({
       id: row.id,
       clinicId: row.clinicId,
       name: row.name,
@@ -34,7 +53,13 @@ export class PatientService {
       createdAt: row.createdAt.toISOString(),
       updatedAt: (row.updatedAt ?? row.createdAt).toISOString(),
     }));
-  }
+    return {
+      data,
+      total,
+      page,
+      pageSize,
+      totalPages,
+    };  }
 
   async create(dto: CreatePatientDto): Promise<PatientDto> {
     const [row] = await db

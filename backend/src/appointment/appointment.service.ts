@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, count } from 'drizzle-orm';
 
 import { db } from '../db';
 import { appointmentsTable } from '../db/schema';
@@ -17,33 +17,25 @@ export class AppointmentService {
     const offset = (page - 1) * pageSize;
 
     // Get total count
-    const countResult = clinicId
-      ? await db
-          .select({ count: db.sql<number>`count(*)::integer` })
-          .from(appointmentsTable)
-          .where(eq(appointmentsTable.clinicId, clinicId))
-      : await db
-          .select({ count: db.sql<number>`count(*)::integer` })
-          .from(appointmentsTable);
-
+    let countQuery = db.select({ count: count() }).from(appointmentsTable);
+    if (clinicId) {
+      countQuery = countQuery.where(eq(appointmentsTable.clinicId, clinicId)) as any;
+    }
+    const countResult = await countQuery;
     const total = countResult[0]?.count ?? 0;
     const totalPages = Math.ceil(total / pageSize);
 
     // Get paginated data
-    let query = db
-      .select()
-      .from(appointmentsTable)
-      .orderBy((t) => t.updatedAt)
-      .limit(pageSize)
-      .offset(offset);
-
+    let query: any = db.select().from(appointmentsTable);
     if (clinicId) {
       query = query.where(eq(appointmentsTable.clinicId, clinicId));
     }
+    const rows = await query
+      .orderBy(appointmentsTable.updatedAt)
+      .limit(pageSize)
+      .offset(offset);
 
-    const rows = await query.execute();
-
-    const data = rows.map((row) => ({
+    const data = rows.map((row: any) => ({
       id: row.id,
       clinicId: row.clinicId,
       patientId: row.patientId,

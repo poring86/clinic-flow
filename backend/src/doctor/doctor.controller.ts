@@ -12,6 +12,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { DoctorDto } from './dto/doctor.dto';
+import { PaginatedDoctorDto } from './dto/paginated-doctor.dto';
 import { DoctorService } from './doctor.service';
 
 @ApiTags('doctor')
@@ -20,10 +21,18 @@ export class DoctorController {
   constructor(private readonly doctorService: DoctorService) {}
 
   @Get()
-  @ApiOperation({ summary: 'List all doctors' })
-  @ApiResponse({ status: 200, type: [DoctorDto] })
-  async findAll(@Query('clinicId') clinicId?: string): Promise<DoctorDto[]> {
-    return this.doctorService.findAll(clinicId);
+  @ApiOperation({ summary: 'List doctors with pagination' })
+  @ApiResponse({ status: 200, type: PaginatedDoctorDto })
+  async findAll(
+    @Query('clinicId') clinicId?: string,
+    @Query('page') page: string = '1',
+    @Query('pageSize') pageSize: string = '10',
+  ): Promise<PaginatedDoctorDto> {
+    return this.doctorService.findAll(
+      clinicId,
+      parseInt(page, 10),
+      parseInt(pageSize, 10),
+    );
   }
 
   @Post()

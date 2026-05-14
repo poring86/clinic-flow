@@ -1,8 +1,8 @@
 export const doctorsQueryKeys = {
   all: ["doctors"] as const,
   list: () => [...doctorsQueryKeys.all, "list"] as const,
-  listByClinic: (clinicId: string) =>
-    [...doctorsQueryKeys.list(), { clinicId }] as const,
+  listByClinic: (clinicId: string, page: number = 1) =>
+    [...doctorsQueryKeys.list(), { clinicId, page }] as const,
   detail: () => [...doctorsQueryKeys.all, "detail"] as const,
   detailById: (clinicId: string, doctorId: string) =>
     [...doctorsQueryKeys.detail(), { clinicId, doctorId }] as const,
