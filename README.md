@@ -183,7 +183,7 @@ Browser
 ## Project Structure
 
 ```
-doutor-agenda/
+clinic-flow/
 ├── docker-compose.yml             # Development stack
 ├── docker-compose.prod.yml        # Production-like stack
 ├── Makefile                       # Shortcuts for Docker workflows
@@ -247,7 +247,7 @@ doutor-agenda/
 ```bash
 # Clone the repository
 git clone <repo-url>
-cd doutor-agenda
+cd clinic-flow
 
 # Start the development stack (db + backend + frontend)
 make dev
@@ -301,7 +301,7 @@ npx orval --config orval.config.js
 
 | Variable       | Description                          | Example                                          |
 |----------------|--------------------------------------|--------------------------------------------------|
-| `DATABASE_URL`  | PostgreSQL connection string         | `postgres://postgres:postgres@db:5432/doutor_agenda` |
+| `DATABASE_URL`  | PostgreSQL connection string         | `postgres://postgres:postgres@db:5432/clinic_flow` |
 | `PORT`          | Server port (optional, default 3000) | `3000`                                           |
 
 ### Frontend
